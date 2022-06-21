@@ -1,2 +1,2 @@
 # ENIGMA
-Simulation of ENIGMA encryption machine.
+This project is going to become **simulation of ENIGMA encryption machine**.
