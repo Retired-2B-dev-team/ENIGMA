@@ -24,4 +24,14 @@ namespace hq
 		}
 	}
 
+	void copy_int_array(int* sorce, int* destinaton, int lenght)
+	{
+		// You can also use std::copy()
+
+		for (int i = 0; i < lenght; i++)
+		{
+			destinaton[i] = sorce[i];
+		}
+	}
+
 }
