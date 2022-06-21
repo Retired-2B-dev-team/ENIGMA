@@ -3,12 +3,13 @@
 
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 #include "headquarters.h" // namespace: "hq"
 
 
 
-namespace egma
+namespace eng
 {
 
 	const int STANDARD_ALPHABET_LENGHT = 26; // lenght of the alphabet used by the machine
@@ -21,18 +22,18 @@ namespace egma
 	private: // private attributes
 		int* connections; // an array describing the disk construction
 		int rotation;
-		int alphabet_lenght;
+		int disk_size; // amount of letters on the single disk
 
 	private: // private methods
 		void __correct_rotation__()
 		{
-			if (rotation >= alphabet_lenght)
+			while (rotation >= disk_size)
 			{
-				rotation -= alphabet_lenght;
+				rotation -= disk_size;
 			}
-			else if (rotation < 0)
+			while (rotation < 0)
 			{
-				rotation += (alphabet_lenght - 1);
+				rotation += (disk_size - 1);
 			}
 		}
 
@@ -41,24 +42,17 @@ namespace egma
 		{
 		}
 
-		void init(int alphabet_size)
+		void init(int* __connections, int __disk_size)
 		{
-			alphabet_lenght = alphabet_size;
-			connections = new int[alphabet_lenght];
+			disk_size = __disk_size;
+			connections = new int[disk_size];
 			rotation = 0;
+			std::copy(__connections, __connections + disk_size, connections);
 		}
 
-		void rotate(bool vector)
+		void rotate(int __rotation_tiks)
 		{
-
-			if (vector == true)
-			{
-				rotation += 1;
-			}
-			else
-			{
-				rotation -= 1;
-			}
+			rotation += __rotation_tiks;
 			__correct_rotation__();
 		}
 	};
@@ -69,32 +63,52 @@ namespace egma
 	private: // private attributes
 		char* alphabet; // ENIGMA machine's alphabet array
 		int* characters_ascii_indexes;
+
 		Disk* disks;
+		Disk* reversed_disks;
+		int disks_amount;
 
 		int alphabet_lenght;
 
 	private: // private methods
-		void __index_alphabet__(std::string machine_alphabet)
+		char __number_to_char__(int number)
 		{
-			for (int i = 0; i < machine_alphabet.size(); i++)
+			return alphabet[number];
+		}
+
+		int __char_to_number__(char character)
+		{
+			return characters_ascii_indexes[(int)character];
+		}
+
+		void __index_alphabet__(std::string __machine_alphabet)
+		{
+			for (int i = 0; i < __machine_alphabet.size(); i++)
 			{
-				alphabet[i] = machine_alphabet[i];
+				alphabet[i] = __machine_alphabet[i];
 				characters_ascii_indexes[(int)alphabet[i]] = i;
 			}
 		}
 
 	public:	// public methods
-		void init(std::string machine_alphabet)
+		Enigma(std::string __machine_alphabet, int __max_disks_amount = STANDARD_DISKS_AMOUNT)
 		{
-			alphabet_lenght = machine_alphabet.size();
+			alphabet_lenght = __machine_alphabet.size();
 			alphabet = new char[alphabet_lenght];
 			characters_ascii_indexes = new int[hq::ASCII_CHARS_AMOUNT];
 
-			__index_alphabet__(machine_alphabet);
+			__index_alphabet__(__machine_alphabet);
+
+			disks_amount = 0;
+			disks = new Disk[__max_disks_amount];
+			reversed_disks = new Disk[__max_disks_amount];
 		}
 
-		void add_disk()
+		void add_disk(int* __connections)
 		{
+			disks[disks_amount].init(__connections, alphabet_lenght);
+
+			disks_amount++;
 		}
 	};
 
