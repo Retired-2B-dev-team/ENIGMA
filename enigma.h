@@ -1,6 +1,29 @@
 // Library with some useful (I hope) stuff for implementing ENIGMA machine simulations
 // 1/14/2022	<Antoni Świtaj>
 
+/*
+Example:
+
+	- ALPHABET:
+
+Letter indexes:  0. 1. 2. 3. 4.
+				[A, B, C, D, F]
+
+	- MACHINE'S FRAGMENT :
+
+			Disk index:  0.     1.     2.
+					     |      |      |
+--------   /  0.   (A)->[3]-   [0]    [4]
+|Letter|  |   1.    ^   [0] \  [4]    [1]
+|index | <    2.    ^   [1]  \ [3] /--[3] => (D)
+--------  |   3.    ^   [4]   -[2]/   [0]
+	       \  4.    ^   [2]    [1]    [2]
+					^    |      |      |
+			input->>^    |      |      |
+						Disks represented
+						  by 1D vectors
+*/
+
 #include <fstream>
 #include <string>
 #include <algorithm>
@@ -18,7 +41,7 @@ namespace eng
 
 	class Disk
 	{
-
+		
 	private: // private attributes
 		int* connections; // an array describing the disk construction
 		int rotation;
@@ -40,13 +63,16 @@ namespace eng
 	public: // public methods
 		void load(std::string file_name)
 		{
+			// this function should load the disk's letter connections from file and initialize disk
 		}
 
 		void init(int* __connections, int __disk_size)
 		{
+			rotation = 0;
+			
 			disk_size = __disk_size;
 			connections = new int[disk_size];
-			rotation = 0;
+
 			std::copy(__connections, __connections + disk_size, connections);
 		}
 
