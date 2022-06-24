@@ -12,16 +12,17 @@ Letter indexes:  0. 1. 2. 3. 4.
 	- MACHINE'S FRAGMENT :
 
 			Disk index:  0.     1.     2.
-					     |      |      |
+						 |      |      |
 --------   /  0.   (A)->[3]-   [0]    [4]
 |Letter|  |   1.    ^   [0] \  [4]    [1]
 |index | <    2.    ^   [1]  \ [3] /--[3] => (D)
 --------  |   3.    ^   [4]   -[2]/   [0]
-	       \  4.    ^   [2]    [1]    [2]
+		   \  4.    ^   [2]    [1]    [2]
 					^    |      |      |
 			input->>^    |      |      |
 						Disks represented
-						  by 1D vectors
+						  by 1D arrays
+						  (connections)
 */
 
 #include <fstream>
@@ -41,8 +42,9 @@ namespace eng
 
 	class Disk
 	{
-		
-	private: // private attributes
+
+	// private: // private attributes
+	public:
 		int* connections; // an array describing the disk construction
 		int rotation;
 		int disk_size; // amount of letters on the single disk
@@ -56,8 +58,20 @@ namespace eng
 			}
 			while (rotation < 0)
 			{
-				rotation += (disk_size - 1);
+				rotation += disk_size;
 			}
+		}
+
+		int __normalize__(int index)
+		{
+			int output = rotation + index;
+
+			if (output >= disk_size)
+			{
+				output -= disk_size;
+			}
+
+			return output;
 		}
 
 	public: // public methods
@@ -69,7 +83,7 @@ namespace eng
 		void init(int* __connections, int __disk_size)
 		{
 			rotation = 0;
-			
+
 			disk_size = __disk_size;
 			connections = new int[disk_size];
 
@@ -81,6 +95,11 @@ namespace eng
 			rotation += __rotation_tiks;
 			__correct_rotation__();
 		}
+
+		int forward(int index)
+		{
+			return connections[__normalize__(index)];
+		}
 	};
 
 	class Enigma
@@ -90,6 +109,7 @@ namespace eng
 		char* alphabet; // ENIGMA machine's alphabet array
 		int* characters_ascii_indexes;
 
+	public:
 		Disk* disks;
 		Disk* reversed_disks;
 		int disks_amount;
@@ -135,6 +155,32 @@ namespace eng
 			disks[disks_amount].init(__connections, alphabet_lenght);
 
 			disks_amount++;
+		}
+
+		void load_disk(std::string __file_name)
+		{
+			disks[disks_amount].load(__file_name);
+
+			disks_amount++;
+		}
+
+		std::string get_visual()
+		{
+			std::string output = "";
+			
+			for (int i = 0; i < disks_amount; i++)
+			{
+				for (int j = 0; j < alphabet_lenght; j++)
+				{
+					output += __number_to_char__(j);
+					output += ": ";
+					output += __number_to_char__(disks[i].forward(j));
+					output += ", ";
+				}
+				output += "\n\n";
+			}
+			
+			return output;
 		}
 	};
 
