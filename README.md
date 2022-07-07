@@ -7,7 +7,7 @@
 
 | `status`         | `maintained` | `maintainers` | `version` | `next-release-deadline` |
 | :--------------: | :----------: | :-----------: | :-------: | :---------------------: |
-| work-in-progress | yes          | 6             | -1.0      | 01.09.2022              |
+| work-in-progress | yes          | 6             |  0.0.0    | 01.09.2022              |
 
 # ENIGMA
 
