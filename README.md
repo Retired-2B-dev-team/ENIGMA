@@ -16,20 +16,24 @@ This project is going to become **a simulation of the ENIGMA encryption machine*
 
 ## Example:
 - ALPHABET:
-  Letter indexes:  0. 1. 2. 3. 4.
-				          [A, B, C, D, F]
+
+    Letter indexes:
+    ```
+      0. 1. 2. 3. 4.
+     [A, B, C, D, F]
+    ```
 
 - MACHINE'S FRAGMENT:
 ```
 Disk index:              0.     1.     2.
                          |      |      |
---------   /  0.   (A)->[3]-   [0]    [4]
+--------   /  0.   [0]->[3]-   [0]    [4]
 |Letter|  |   1.    ^   [0] \  [4]    [1]
 |index | <    2.    ^   [1]  \ [3] /--[3] => (D)
 --------  |   3.    ^   [4]   -[2]/   [0]
            \  4.    ^   [2]    [1]    [2]
                     ^    |      |      |
-            input->>^    |      |      |
+     (A) => input->>^    |      |      |
                         Disks represented
                            by 1D arrays
                           (connections)
