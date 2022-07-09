@@ -5,7 +5,7 @@
 | :--------------: | :----------: | :-----------: | :-------: | :---------------------: |
 | work-in-progress | yes          | 6             |  0.0.0    | 01-September-2022       |
 
-[![GitHub license](https://img.shields.io/github/license/JENOT-ANT/ENIGMA?style=for-the-badge)](https://github.com/JENOT-ANT/ENIGMA)
+[![GitHub license](https://img.shields.io/github/license/JENOT-ANT/ENIGMA?style=for-the-badge)](https://github.com/JENOT-ANT/ENIGMA/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/JENOT-ANT/ENIGMA?style=for-the-badge)](https://github.com/JENOT-ANT/ENIGMA/issues)
 
 # ENIGMA
