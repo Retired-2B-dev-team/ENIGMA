@@ -185,7 +185,7 @@ namespace eng
 		
 		char transcribe(char __letter, int __disk_number) // this function changes input letter according to connections in the disk
 		{
-			char output = enigma.disks[__disk_number].foward(__char_to_number__(letter));
+			char output = enigma.disks[__disk_number].foward(__char_to_number__(__letter));
 			return output;
 		}
 		
