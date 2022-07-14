@@ -1,5 +1,5 @@
 // Library with some useful (I hope) stuff for implementing ENIGMA machine simulations
-// 1/14/2022	<Antoni Świtaj>
+// 1/14/2022	<RETIRED-2B-DEV-TEAM>
 
 /*
 Example:
@@ -191,16 +191,16 @@ namespace eng
 		
 		char encrypt(char __letter) // this is the encryption mechanism , it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
-			char output= __letter;
+			char output = __letter;
 			
 			for (int i = 0; i < disks_amount; i++)
 			{
-				output = transcribe(output,i);	
+				output = transcribe(output, i);	
 			}
 			
-			for (int i = disks_amount-1; i >= 0; i--)
+			for (int i = disks_amount - 1; i >= 0; i--)
 			{
-				output = transcribe(output,i);
+				output = transcribe(output, i);
 			}
 			
 			return output;
