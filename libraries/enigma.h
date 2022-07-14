@@ -28,7 +28,7 @@ Letter indexes:  0. 1. 2. 3. 4.
 #include <fstream>
 #include <string>
 #include <algorithm>
-
+#include <iostram>
 #include "headquarters.h" // namespace: "hq"
 
 
