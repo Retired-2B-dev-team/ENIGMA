@@ -182,6 +182,29 @@ namespace eng
 			
 			return output;
 		}
+		
+		char transcribe(char __letter, int __disk_number) // this function changes input letter according to connections in the disk
+		{
+			char output = disks[__disk_number].foward(__char_to_number__(__letter));
+			return output;
+		}
+		
+		char encrypt(char __letter) // this is the encryption mechanism , it goes throught all disks(foward and back) and outputs an encrypted letter
+		{
+			char output= __letter;
+			
+			for (int i = 0; i < disks_amount; i++)
+			{
+				output = transcribe(output,i);	
+			}
+			
+			for (int i = disks_amount-1; i >= 0; i--)
+			{
+				output = transcribe(output,i);
+			}
+			
+			return output;
+		}
 	};
 
 }
