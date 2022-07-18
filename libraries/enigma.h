@@ -208,7 +208,7 @@ namespace eng
 			output = transcribe(output,i,disks);
 		    }
 
-		    for (int i = 0; i < disks_amount; i++)
+		    for (int i = disks_amount-1; i >= 0; i--)
 		    {
 			output = transcribe(output,i,reversed_disks);
 		    }
