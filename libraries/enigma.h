@@ -152,9 +152,18 @@ namespace eng
 
 		void add_disk(int* __connections)
 		{
+			int* reversed_connections = __connections
+
 			disks[disks_amount].init(__connections, alphabet_lenght);
 
-			disks_amount++;
+		    	for(int i = 0 ; i < alphabet_lenght; i++)
+		    	{
+				reversed_connections[__connections[i]] = i;
+		    	}
+
+		    	reversed_disks[disks_amount].init(reversed_connections, alphabet_lenght);
+
+		    	disk_amount++;
 		}
 
 		void load_disk(std::string __file_name)
@@ -183,28 +192,28 @@ namespace eng
 			return output;
 		}
 		
-		char transcribe(char __letter, int __disk_number) // this function changes input letter according to connections in the disk
+		char transcribe(char __letter, int __disk_number, Disk* __disks) // this function changes input letter according to connections in the disk
 		{
-			char output = disks[__disk_number].foward(__char_to_number__(__letter));
-			return output;
+		    char output = __disks[__disk_number].foward(__char_to_number__(__letter));
+		    return output;
 		}
-		
+
+
 		char encrypt(char __letter) // this is the encryption mechanism , it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
-			char output = __letter;
-			
-			for (int i = 0; i < disks_amount; i++)
-			{
-				output = transcribe(output, i);	
-			}
-			
-			for (int i = disks_amount - 1; i >= 0; i--)
-			{
-				output = transcribe(output, i);
-			}
-			
-			return output;
+		    char output= __letter;
+
+		    for (int i = 0; i < disks_amount; i++)
+		    {
+			output = transcribe(output,i,disks);
+		    }
+
+		    for (int i = 0; i < disks_amount; i++)
+		    {
+			output = transcribe(output,i,reversed_disks);
+		    }
+
+		    return output; 
 		}
-	};
 
 }
