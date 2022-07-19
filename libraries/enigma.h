@@ -205,6 +205,15 @@ namespace eng
 			
 			return output;
 		}
+		Disk create_reversed_disk(Disk starting_disk)
+		{
+			Disk reversed_disk{};
+			for (int i = 0; i < starting_disk.disk_size; i++)
+			{
+				reversed_disk.connections[starting_disk.connections[i]] = i;
+			}
+			return reversed_disk;
+		}
 	};
 
 }
