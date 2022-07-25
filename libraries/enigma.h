@@ -185,7 +185,7 @@ namespace eng
 		
 		char transcribe(char __letter, int __disk_number) // this function changes input letter according to connections in the disk
 		{
-			char output = disks[__disk_number].foward(__char_to_number__(__letter));
+			char output = disks[__disk_number].forward(__char_to_number__(__letter));
 			return output;
 		}
 		
@@ -205,6 +205,7 @@ namespace eng
 			
 			return output;
 		}
+		
 		Disk create_reversed_disk(Disk starting_disk)
 		{
 			Disk reversed_disk{};
