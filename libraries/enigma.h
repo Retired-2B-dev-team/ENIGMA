@@ -213,12 +213,12 @@ namespace eng
 
 			for (int i = 0; i < disks_amount; i++)
 			{
-				output = transcribe(output,i,disks);
+				output = transcribe(output, i, disks);
 			}
 
-			for (int i = disk; i < disks_amount; i++)
+			for (int i = disk_amount - 1; i >= 0; i--)
 			{
-				output = transcribe(output,i,reversed_disks);
+				output = transcribe(output, i, reversed_disks);
 			}
 
 			return output; 
