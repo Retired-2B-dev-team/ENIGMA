@@ -4,23 +4,23 @@
 /*
 Example:
 
-	- ALPHABET:
+    - ALPHABET:
 
 Letter indexes:  0. 1. 2. 3. 4.
-				[A, B, C, D, F]
+                [A, B, C, D, F]
 
-	- MACHINE'S FRAGMENT :
+    - MACHINE'S FRAGMENT :
 
-			Disk index:  0.     1.     2.
-						 |      |      |
+            Disk index:  0.     1.     2.
+                         |      |      |
 --------   /  0.   (A)->[3]-   [0]    [4]
 |Letter|  |   1.    ^   [0] \  [4]    [1]
 |index | <    2.    ^   [1]  \ [3] /--[3] => (D)
 --------  |   3.    ^   [4]   -[2]/   [0]
 		   \  4.    ^   [2]    [1]    [2]
-					^    |      |      |
-			input->>^    |      |      |
-						Disks represented
+                    ^    |      |      |
+            input->>^    |      |      |
+                        Disks represented
 						  by 1D arrays
 						  (connections)
 */
@@ -47,47 +47,47 @@ namespace eng
 	public:
 		int* connections; // an array describing the disk construction
 		int rotation;
-		int disk_size; // amount of letters on the single disk
+		int size; // amount of letters on the single disk
 
 	private: // private methods
 		void __correct_rotation__()
 		{
-			while (rotation >= disk_size)
+			while (rotation >= size)
 			{
-				rotation -= disk_size;
+				rotation -= size;
 			}
 			while (rotation < 0)
 			{
-				rotation += disk_size;
+				rotation += size;
 			}
 		}
 
-		int __normalize__(int index)
+		int __normalize__(int __index)
 		{
-			int output = rotation + index;
+			int output = rotation + __index;
 
-			if (output >= disk_size)
+			if (output >= size)
 			{
-				output -= disk_size;
+				output -= size;
 			}
 
 			return output;
 		}
 
 	public: // public methods
-		void load(std::string file_name)
-		{
-			// this function should load the disk's letter connections from file and initialize disk
-		}
+		// void load(std::string file_name)
+		// {
+		// 	// this function should load the disk's letter connections from file and initialize disk
+		// }
 
 		void init(int* __connections, int __disk_size)
 		{
 			rotation = 0;
 
-			disk_size = __disk_size;
-			connections = new int[disk_size];
+			size = __disk_size;
+			connections = new int[size];
 
-			std::copy(__connections, __connections + disk_size, connections);
+			std::copy(__connections, __connections + size, connections);
 		}
 
 		void rotate(int __rotation_tiks)
@@ -136,12 +136,28 @@ namespace eng
 			}
 		}
 
+		Disk __create_reversed_disk__(Disk __starting_disk)
+		{
+			Disk reversed_disk{};
+			int reversed_connections[__starting_disk.size];
+			
+			for (int i = 0; i < __starting_disk.size; i++)
+			{
+				reversed_connections[__starting_disk.connections[i]] = i;
+				// reversed_disk.connections[__starting_disk.connections[i]] = i;
+			}
+			
+			reversed_disk.init(reversed_connections, __starting_disk.size);
+			
+			return reversed_disk;
+		}
+
 	public:	// public methods
 		Enigma(std::string __machine_alphabet, int __max_disks_amount = STANDARD_DISKS_AMOUNT)
 		{
-			alphabet_lenght = __machine_alphabet.size();
 			alphabet = new char[alphabet_lenght];
 			characters_ascii_indexes = new int[hq::ASCII_CHARS_AMOUNT];
+			alphabet_lenght = __machine_alphabet.size();
 
 			__index_alphabet__(__machine_alphabet);
 
@@ -154,14 +170,15 @@ namespace eng
 		{
 			disks[disks_amount].init(__connections, alphabet_lenght);
 
+			reversed_disks[disks_amount] = __create_reversed_disk__(disks[disks_amount]);
+
 			disks_amount++;
 		}
 
 		void load_disk(std::string __file_name)
 		{
-			disks[disks_amount].load(__file_name);
 
-			disks_amount++;
+			add_disk();
 		}
 
 		std::string get_visual()
@@ -205,16 +222,5 @@ namespace eng
 			
 			return output;
 		}
-		
-		Disk create_reversed_disk(Disk starting_disk)
-		{
-			Disk reversed_disk{};
-			for (int i = 0; i < starting_disk.disk_size; i++)
-			{
-				reversed_disk.connections[starting_disk.connections[i]] = i;
-			}
-			return reversed_disk;
-		}
 	};
-
 }

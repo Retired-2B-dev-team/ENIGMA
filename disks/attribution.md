@@ -1,0 +1,1 @@
+# This *rotors descriptions* originate from: https://pl.wikipedia.org/wiki/Enigma
