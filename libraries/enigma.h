@@ -177,8 +177,18 @@ namespace eng
 
 		void load_disk(std::string __file_name)
 		{
+			char letter;
+			int connections[alphabet_lenght];
+			fstream myfile;
 
-			add_disk();
+			myfile.open(__file_name.c_str(),ios::in);
+			for(int i=0;i<alphabet_lenght;i++)
+			{
+				myfile>>letter;
+				connections[i]=__char_to_number__(letter);
+			}
+			myfile.close();
+			add_disk(connections);
 		}
 
 		std::string get_visual()
