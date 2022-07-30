@@ -25,8 +25,6 @@ Letter indexes:  0. 1. 2. 3. 4.
 						  (connections)
 */
 
-#include <fstream>
-#include <string>
 #include <algorithm>
 
 #include "headquarters.h" // namespace: "hq"

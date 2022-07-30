@@ -1,5 +1,7 @@
 // Library with some general purpose functions.
 // Copyright: (!c) Public Domain | Author: <JENOT>
+#include <fstream>
+#include <string>
 
 namespace hq
 {
@@ -32,6 +34,22 @@ namespace hq
 		{
 			destinaton[i] = sorce[i];
 		}
+	}
+
+	std::string read_file(std::string file_name)
+	{
+		std::fstream file;
+		std::string line = "";
+		std::string text = "";
+		
+		file.open(file_name, std::ios::in);
+		while (std::getline(file, line))
+		{
+			text += line + '\n';
+		}
+		file.close();
+
+		return text;
 	}
 
 }
