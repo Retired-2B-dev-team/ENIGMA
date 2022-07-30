@@ -139,7 +139,7 @@ namespace eng
 		Disk __create_reversed_disk__(Disk __starting_disk)
 		{
 			Disk reversed_disk{};
-			int reversed_connections[__starting_disk.size];
+			int* reversed_connections = new int[__starting_disk.size];
 			
 			for (int i = 0; i < __starting_disk.size; i++)
 			{
@@ -178,14 +178,14 @@ namespace eng
 		void load_disk(std::string __file_name)
 		{
 			char letter;
-			int connections[alphabet_lenght];
-			fstream myfile;
+			int* connections = new int[alphabet_lenght];
+			std::fstream myfile;
 
-			myfile.open(__file_name.c_str(),ios::in);
-			for(int i=0;i<alphabet_lenght;i++)
+			myfile.open(__file_name.c_str(), std::ios::in);
+			for(int i=0; i<alphabet_lenght; i++)
 			{
-				myfile>>letter;
-				connections[i]=__char_to_number__(letter);
+				myfile >> letter;
+				connections[i] = __char_to_number__(letter);
 			}
 			myfile.close();
 			add_disk(connections);
@@ -212,7 +212,7 @@ namespace eng
 		
 		char transcribe(char __letter, int __disk_number, Disk* __disks) // this function changes input letter according to connections in the disk
 		{
-			char output = __disks[__disk_number].foward(__char_to_number__(__letter));
+			char output = __disks[__disk_number].forward(__char_to_number__(__letter));
 			return output;
 		}
 
@@ -226,7 +226,7 @@ namespace eng
 				output = transcribe(output, i, disks);
 			}
 
-			for (int i = disk_amount - 1; i >= 0; i--)
+			for (int i = disks_amount - 1; i >= 0; i--)
 			{
 				output = transcribe(output, i, reversed_disks);
 			}
