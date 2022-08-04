@@ -9,9 +9,10 @@ DESCRIPTION:
 USAGE:
 	1. enigma -h | -v
 	2. enigma [-f path]
-	
-OPTIONS:
-	-h, -?, --help			display this help message
-	-v, 	--version		display the app version
-	-f						encrypt a file's content
+	3. enigma [-t text-message]
 
+OPTIONS:
+	-h,		--help			display this help message
+	-v, 	--version		display the app version
+	-f,						encrypt a file's content
+	-t,						encrypt a text message
