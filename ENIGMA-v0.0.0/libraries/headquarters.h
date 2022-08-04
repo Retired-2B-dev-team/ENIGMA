@@ -2,6 +2,7 @@
 // Copyright: (!c) Public Domain | Author: <JENOT>
 #include <fstream>
 #include <string>
+#include <vector>
 
 namespace hq
 {
@@ -52,4 +53,84 @@ namespace hq
 		return text;
 	}
 
+	namespace cmd
+	{
+		const char SEPARATOR = '-';
+		
+		std::vector<std::string> separate_args(int argc, char** argv)
+		{
+			std::string argument;
+			std::vector<std::string> output;
+			std::string word;
+			
+			for (int i = 1; i < argc; i++) // for each argument
+			{
+				argument = std::string(argv[i]);
+
+				
+				if (argument[0] == SEPARATOR && argument.size() > 1) // if it's an argument
+				{
+
+					if (argument[1] == SEPARATOR && argument.size() > 2) // --full_name
+					{
+						word = "";
+						
+						for (int j = 2; j < argument.size(); j++)
+						{
+							word += argument[j];
+						}
+
+						output.push_back(std::string("--") + word);
+					}
+					else // -abc
+					{
+						for (int j = 1; j < argument.size(); j++)
+						{
+							word = "-";
+							word += argument[j];
+							output.push_back(word);
+						}
+					}
+				}
+				else // if it's input
+				{
+					output.push_back(argument);
+				}
+			}
+
+			return output;
+		}
+		// class Arg
+		// {
+		// public:
+		// 	bool read_next;
+		// 	char alias;
+		// 	std::string full_name;
+
+		// 	void init (char __alias, std::string __full_name, bool __read_next)
+		// 	{
+		// 		alias = __alias;
+		// 		full_name = __full_name;
+		// 		read_next = __read_next;
+		// 	}
+		// };
+
+		// class CMD_handler
+		// {
+		// 	int args_amount;
+		// 	int max_args_amount;
+		// 	Arg* args;
+
+		// 	CMD_handler(int __max_args_amount)
+		// 	{
+		// 		max_args_amount = __max_args_amount;
+		// 		args = new Arg[max_args_amount];
+		// 	}
+
+		// 	void add_arg(char __alias, std::string __full_name, bool __read_next)
+		// 	{
+		// 		args[args_amount].init(__alias, __full_name, __read_next);
+		// 	}
+		// };
+	}
 }
