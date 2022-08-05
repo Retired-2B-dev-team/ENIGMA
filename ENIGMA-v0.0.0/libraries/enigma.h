@@ -109,6 +109,7 @@ namespace eng
 
 	public:
 		Disk* disks;
+		Disk reflector; // reversing roller
 		Disk* reversed_disks;
 		int disks_amount;
 
@@ -179,6 +180,11 @@ namespace eng
 			reversed_disks[disk_index] = __create_reversed_disk__(disks[disk_index]);
 		}
 
+		void set_reflector(int* __connections)
+		{
+			reflector.init(__connections, alphabet_lenght);
+		}
+
 		void load_connections(std::string __file_name, int* __connections)
 		{
 			char letter;
@@ -214,30 +220,30 @@ namespace eng
 			return output;
 		}
 		
-		char transcribe(char __letter, int __disk_number, Disk* __disks) // this function changes input letter according to connections in the disk
+		int transcribe(int __letter, int __disk_number, Disk* __disks) // this function changes input letter according to connections in the disk
 		{
-			char output = __disks[__disk_number].forward(__char_to_number__(__letter));
+			int output = __disks[__disk_number].forward(__char_to_number__(__letter));
 			return output;
 		}
 
 
 		char encrypt(char __letter) // this is the encryption mechanism , it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
-			char output= __letter;
+			int output = __char_to_number__(__letter);
 
 			for (int i = 0; i < disks_amount; i++)
 			{
 				output = transcribe(output, i, disks);
 			}
 
+			output = reflector.forward(output);
+			
 			for (int i = disks_amount - 1; i >= 0; i--)
 			{
 				output = transcribe(output, i, reversed_disks);
 			}
 
-			return output; 
+			return __number_to_char__(output); 
 		}
-
-
 	};
 }
