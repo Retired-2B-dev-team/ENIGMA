@@ -173,20 +173,26 @@ namespace eng
 			disks_amount++;
 		}
 
-		void load_disk(std::string __file_name)
+		void change_disk(int disk_index, int* __connections)
+		{
+			disks[disk_index].init(__connections, alphabet_lenght);
+			reversed_disks[disk_index] = __create_reversed_disk__(disks[disk_index]);
+		}
+
+		void load_connections(std::string __file_name, int* __connections)
 		{
 			char letter;
-			int* connections = new int[alphabet_lenght];
+			__connections = new int[alphabet_lenght];
 			std::fstream myfile;
 
 			myfile.open(__file_name.c_str(), std::ios::in);
-			for(int i=0; i<alphabet_lenght; i++)
+			for (int i = 0; i < alphabet_lenght; i++)
 			{
 				myfile >> letter;
-				connections[i] = __char_to_number__(letter);
+				__connections[i] = __char_to_number__(letter);
 			}
 			myfile.close();
-			add_disk(connections);
+			// add_disk(__connections);
 		}
 
 		std::string get_visual()
