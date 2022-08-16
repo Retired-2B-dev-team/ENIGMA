@@ -108,6 +108,7 @@ namespace eng
 		int* characters_ascii_indexes;
 
 	public:
+		Disk plugin_board;
 		Disk* disks;
 		Disk reflector; // reversing roller
 		Disk* reversed_disks;
@@ -151,6 +152,18 @@ namespace eng
 			return reversed_disk;
 		}
 
+		void __init_plugin_board__()
+		{
+			int* __connections = new int[alphabet_lenght];
+
+			for (int i = 0; i < alphabet_lenght; i++)
+			{
+				__connections[i] = i;
+			}
+			
+			plugin_board.init(__connections, alphabet_lenght);
+		}
+
 	public:	// public methods
 		Enigma(std::string __machine_alphabet, int __max_disks_amount = STANDARD_DISKS_AMOUNT)
 		{
@@ -163,6 +176,7 @@ namespace eng
 			disks_amount = 0;
 			disks = new Disk[__max_disks_amount];
 			reversed_disks = new Disk[__max_disks_amount];
+			__init_plugin_board__();
 		}
 
 		void add_disk(int* __connections)
@@ -172,6 +186,12 @@ namespace eng
 			reversed_disks[disks_amount] = __create_reversed_disk__(disks[disks_amount]);
 
 			disks_amount++;
+		}
+
+		void plug_in(char x, char y)
+		{
+			plugin_board.connections[__char_to_number__(x)] = __char_to_number__(y);
+			plugin_board.connections[__char_to_number__(y)] = __char_to_number__(x);
 		}
 
 		void change_disk(int disk_index, int* __connections)
@@ -200,7 +220,7 @@ namespace eng
 			myfile.close();
 			// add_disk(__connections);
 		}
-
+		
 		std::string get_visual()
 		{
 			std::string output = "";
