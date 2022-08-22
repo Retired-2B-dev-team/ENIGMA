@@ -194,6 +194,13 @@ namespace eng
 			plugin_board.connections[__char_to_number__(y)] = __char_to_number__(x);
 		}
 
+		void plug_out(char x)
+		{
+			int y = plugin_board.connections[__char_to_number__(x)];
+			plugin_board.connections[__char_to_number__(x)] = __char_to_number__(x);
+			plugin_board.connections[y] = y;
+		}
+
 		void change_disk(int disk_index, int* __connections)
 		{
 			disks[disk_index].init(__connections, alphabet_lenght);
