@@ -270,7 +270,7 @@ namespace eng
 		}
 
 
-		char encrypt(char __letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
+		char encrypt_letter(char __letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
 			int output = __char_to_number__(__letter);
 			output = plugin_board.forward(output);
@@ -292,6 +292,18 @@ namespace eng
 			output = plugin_board.forward(output);
 			
 			return __number_to_char__(output);
+		}
+
+		std::string encrypt_message(std::string __message)
+		{
+			std::string output = "";
+			
+			for (int i = 0; i < __message.size(); i++)
+			{
+				output += encrypt_letter(__message[i]);
+			}
+
+			return output;
 		}
 	};
 }

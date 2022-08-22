@@ -53,36 +53,40 @@ int main(int argc, char** argv)
 	// machine declaration:
 	Enigma enigma(ALPHABET);
 	// disks' connections:
-	int BETA[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "beta.rtr",	BETA);
-	int GAMMA[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "gamma.rtr",	GAMMA);
+	int BETA[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "beta.rtr",	BETA);
+	int GAMMA[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "gamma.rtr",	GAMMA);
 	int I[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "I.rtr",		I);
-	int II[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "II.rtr",		II);
-	int III[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "III.rtr",		III);
-	int IV[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "IV.rtr",		IV);
-	int V[eng::STD_ALPHA_LEN];;		enigma.load_connections(DISKS_PATH + "V.rtr",		V);
-	int VI[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "VI.rtr",		VI);
-	int VII[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "VII.rtr",		VII);
-	int VIII[eng::STD_ALPHA_LEN];;	enigma.load_connections(DISKS_PATH + "VIII.rtr",	VIII);
-
-	int B[eng::STD_ALPHA_LEN];;		enigma.load_connections(REFLECTORS_PATH + "B.rtr", B);
-	int C[eng::STD_ALPHA_LEN];;		enigma.load_connections(REFLECTORS_PATH + "C.rtr", C);
+	int II[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "II.rtr",		II);
+	int III[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "III.rtr",		III);
+	int IV[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "IV.rtr",		IV);
+	int V[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "V.rtr",		V);
+	int VI[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "VI.rtr",		VI);
+	int VII[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "VII.rtr",		VII);
+	int VIII[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "VIII.rtr",	VIII);
+	// reflectors' connections:
+	int B[eng::STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "B.rtr", B);
+	int C[eng::STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "C.rtr", C);
 
 	// for (int i = 0; i < 26; i++)
 	// {
 	// 	std::cout << I[i] << ' ';
 	// }
 
+
+	// TEST / EXAMPLE set:
 	enigma.add_disk(I);
 	enigma.add_disk(II);
 	enigma.add_disk(III);
 
 	enigma.set_reflector(B);
 
+	enigma.plug_in('A', 'B');
 
 	std::cout << enigma.get_visual();
 
-	std::cout << enigma.encrypt('A');
-	std::cout << enigma.encrypt('N');
+	std::cout << enigma.encrypt_letter('A');
+	std::cout << enigma.encrypt_letter('F');
+	std::cout << enigma.encrypt_letter('B');
 	
 	return 0;
 }
