@@ -34,7 +34,7 @@ Letter indexes:  0. 1. 2. 3. 4.
 namespace eng
 {
 
-	const int STANDARD_ALPHABET_LENGHT = 26; // lenght of the alphabet used by the machine
+	const int STD_ALPHA_LEN = 26; // lenght of the alphabet used by the machine
 	const int STANDARD_DISKS_AMOUNT = 3;	 // amount of disks with letters, used in the machine
 
 
@@ -98,6 +98,15 @@ namespace eng
 		{
 			return connections[__normalize__(index)];
 		}
+
+		void get_visual()
+		{
+			
+			for (int i = 0; i < size; i++)
+			{
+				std::cout << forward(i) << ' ';
+			}
+		}
 	};
 
 	class Enigma
@@ -138,16 +147,18 @@ namespace eng
 
 		Disk __create_reversed_disk__(Disk __starting_disk)
 		{
-			Disk reversed_disk{};
-			int* reversed_connections = new int[__starting_disk.size];
-			
-			for (int i = 0; i < __starting_disk.size; i++)
+			Disk reversed_disk;
+			int* reversed_connections = new int[alphabet_lenght];
+
+			//std::cout << '\t';
+			for (int i = 0; i < alphabet_lenght; i++)
 			{
+				//std::cout << __starting_disk.connections[i] << ' ';
 				reversed_connections[__starting_disk.connections[i]] = i;
 				// reversed_disk.connections[__starting_disk.connections[i]] = i;
 			}
 			
-			reversed_disk.init(reversed_connections, __starting_disk.size);
+			reversed_disk.init(reversed_connections, alphabet_lenght);
 			
 			return reversed_disk;
 		}
@@ -183,6 +194,8 @@ namespace eng
 		{
 			disks[disks_amount].init(__connections, alphabet_lenght);
 
+			//disks[disks_amount].get_visual();
+
 			reversed_disks[disks_amount] = __create_reversed_disk__(disks[disks_amount]);
 
 			disks_amount++;
@@ -215,7 +228,7 @@ namespace eng
 		void load_connections(std::string __file_name, int* __connections)
 		{
 			char letter;
-			__connections = new int[alphabet_lenght];
+			//__connections = new int[alphabet_lenght];
 			std::fstream myfile;
 
 			myfile.open(__file_name.c_str(), std::ios::in);
@@ -223,6 +236,7 @@ namespace eng
 			{
 				myfile >> letter;
 				__connections[i] = __char_to_number__(letter);
+				//std::cout << letter << ' ' << __connections[i] << ' ';
 			}
 			myfile.close();
 			// add_disk(__connections);
@@ -240,6 +254,8 @@ namespace eng
 					output += ": ";
 					output += __number_to_char__(disks[i].forward(j));
 					output += ", ";
+					output += __number_to_char__(reversed_disks[i].forward(j));
+					output += "; ";
 				}
 				output += "\n\n";
 			}
@@ -249,18 +265,21 @@ namespace eng
 		
 		int transcribe(int __letter, int __disk_number, Disk* __disks) // this function changes input letter according to connections in the disk
 		{
-			int output = __disks[__disk_number].forward(__char_to_number__(__letter));
+			int output = __disks[__disk_number].forward(__letter);
 			return output;
 		}
 
 
-		char encrypt(char __letter) // this is the encryption mechanism , it goes throught all disks(foward and back) and outputs an encrypted letter
+		char encrypt(char __letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
 			int output = __char_to_number__(__letter);
-
+			output = plugin_board.forward(output);
+			
 			for (int i = 0; i < disks_amount; i++)
 			{
+				//std::cout << "checkpoint " << i << '.';
 				output = transcribe(output, i, disks);
+				//output = disks[i].forward(output);
 			}
 
 			output = reflector.forward(output);
@@ -270,7 +289,9 @@ namespace eng
 				output = transcribe(output, i, reversed_disks);
 			}
 
-			return __number_to_char__(output); 
+			output = plugin_board.forward(output);
+			
+			return __number_to_char__(output);
 		}
 	};
 }
