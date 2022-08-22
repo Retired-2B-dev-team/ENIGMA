@@ -37,6 +37,3 @@ Disk index:              0.     1.     2.
                            by 1D arrays
                           (connections)
 ```
-## Contents:
-- *[/libraries/](/libraries)* -> project's libraries folder
-- *[/enigma-vm.cpp](/enigma-vm.cpp)* -> main project file
