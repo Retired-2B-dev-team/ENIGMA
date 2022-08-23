@@ -62,9 +62,10 @@ namespace eng
 
 		int __normalize__(int __index)
 		{
+			// this function grab index and add rotation tiks to it, so signal can be passed to the right spot on the ring
 			int output = rotation + __index;
 
-			if (output >= size)
+			if (output >= size) // if index of out input is out of range of disk
 			{
 				output -= size;
 			}
@@ -80,6 +81,7 @@ namespace eng
 
 		void init(int* __connections, int __disk_size)
 		{
+			// function that is used to prepare disk before usage
 			rotation = 0;
 
 			size = __disk_size;
@@ -90,12 +92,14 @@ namespace eng
 
 		void rotate(int __rotation_tiks)
 		{
+			// function used to rotate disk
 			rotation += __rotation_tiks;
 			__correct_rotation__();
 		}
 
 		int forward(int index)
 		{
+			// pass signal through disk
 			return connections[__normalize__(index)];
 		}
 
@@ -114,14 +118,14 @@ namespace eng
 
 	private: // private attributes
 		char* alphabet; // ENIGMA machine's alphabet array
-		int* characters_ascii_indexes;
+		int* characters_ascii_indexes; // array used to convert characters to numbers (under specific ASCII index, in this array there is a number that represent this character)
 
 	public:
 		Disk plugin_board;
 		Disk* disks;
 		Disk reflector; // reversing roller
 		Disk* reversed_disks;
-		int disks_amount;
+		int disks_amount; // current amount of disks
 
 		int alphabet_lenght;
 
@@ -138,6 +142,7 @@ namespace eng
 
 		void __index_alphabet__(std::string __machine_alphabet)
 		{
+			// this function fills character_ascii_indexes with numbers that represent proper sign in ascii table (usually it will be just small fragment of this table, just indexes of letters that are used by machine)
 			for (int i = 0; i < __machine_alphabet.size(); i++)
 			{
 				alphabet[i] = __machine_alphabet[i];
@@ -147,6 +152,7 @@ namespace eng
 
 		Disk __create_reversed_disk__(Disk __starting_disk)
 		{
+			// function that generate reversed (index <-> values) version of specific disk (it's needed when signal is 'returning', after it reachs reflector)
 			Disk reversed_disk;
 			int* reversed_connections = new int[alphabet_lenght];
 
@@ -165,6 +171,7 @@ namespace eng
 
 		void __init_plugin_board__()
 		{
+			// function that prepares plug-in board without any connections between letters
 			int* __connections = new int[alphabet_lenght];
 
 			for (int i = 0; i < alphabet_lenght; i++)
@@ -178,6 +185,8 @@ namespace eng
 	public:	// public methods
 		Enigma(std::string __machine_alphabet, int __max_disks_amount = STANDARD_DISKS_AMOUNT)
 		{
+			// function that is used to prepare machine before usage
+
 			alphabet = new char[alphabet_lenght];
 			characters_ascii_indexes = new int[hq::ASCII_CHARS_AMOUNT];
 			alphabet_lenght = __machine_alphabet.size();
@@ -192,6 +201,8 @@ namespace eng
 
 		void add_disk(int* __connections)
 		{
+			// this function is used to define first / default disks
+
 			disks[disks_amount].init(__connections, alphabet_lenght);
 
 			//disks[disks_amount].get_visual();
@@ -203,12 +214,14 @@ namespace eng
 
 		void plug_in(char x, char y)
 		{
+			// this is function that allows to make a connection on plug-in board between two letters
 			plugin_board.connections[__char_to_number__(x)] = __char_to_number__(y);
 			plugin_board.connections[__char_to_number__(y)] = __char_to_number__(x);
 		}
 
 		void plug_out(char x)
 		{
+			// this is function that allows to disconnect two letters on plug-in board
 			int y = plugin_board.connections[__char_to_number__(x)];
 			plugin_board.connections[__char_to_number__(x)] = __char_to_number__(x);
 			plugin_board.connections[y] = y;
@@ -216,17 +229,20 @@ namespace eng
 
 		void change_disk(int disk_index, int* __connections)
 		{
+			// this function is used to change currently used disk (from the machine) to another one
 			disks[disk_index].init(__connections, alphabet_lenght);
 			reversed_disks[disk_index] = __create_reversed_disk__(disks[disk_index]);
 		}
 
 		void set_reflector(int* __connections)
 		{
+			// this function is used to mount reflector into machine
 			reflector.init(__connections, alphabet_lenght);
 		}
 
 		void load_connections(std::string __file_name, int* __connections)
 		{
+			// this function is used to load array describing disk / reflector / plugin board from text file
 			char letter;
 			//__connections = new int[alphabet_lenght];
 			std::fstream myfile;
@@ -263,8 +279,9 @@ namespace eng
 			return output;
 		}
 		
-		int transcribe(int __letter, int __disk_number, Disk* __disks) // this function changes input letter according to connections in the disk
+		int transcribe(int __letter, int __disk_number, Disk* __disks)
 		{
+			 // this function changes input letter according to connections in the disk
 			int output = __disks[__disk_number].forward(__letter);
 			return output;
 		}
@@ -272,6 +289,7 @@ namespace eng
 
 		char encrypt_letter(char __letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
+			// this function take a letter on the input, goes through every part of the machine, and returns processed, encripted version of the input
 			int output = __char_to_number__(__letter);
 			output = plugin_board.forward(output);
 			
@@ -296,6 +314,7 @@ namespace eng
 
 		std::string encrypt_message(std::string __message)
 		{
+			// this function goes through every letter in message and encrypt/decrypt it using encrypt_letter function
 			std::string output = "";
 			
 			for (int i = 0; i < __message.size(); i++)
