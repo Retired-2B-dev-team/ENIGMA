@@ -36,7 +36,7 @@ namespace eng
 
 	const int STD_ALPHA_LEN = 26; // lenght of the alphabet used by the machine
 	const int STANDARD_DISKS_AMOUNT = 3;	 // amount of disks with letters, used in the machine
-
+	const int IRREGULAR_LETTER = -1;
 
 	class Disk
 	{
@@ -143,6 +143,8 @@ namespace eng
 		void __index_alphabet__(std::string __machine_alphabet)
 		{
 			// this function fills character_ascii_indexes with numbers that represent proper sign in ascii table (usually it will be just small fragment of this table, just indexes of letters that are used by machine)
+			hq::clear_int_array(characters_ascii_indexes, 0, hq::ASCII_CHARS_AMOUNT, IRREGULAR_LETTER);
+
 			for (int i = 0; i < __machine_alphabet.size(); i++)
 			{
 				alphabet[i] = __machine_alphabet[i];
@@ -187,9 +189,9 @@ namespace eng
 		{
 			// function that is used to prepare machine before usage
 
+			alphabet_lenght = __machine_alphabet.size();
 			alphabet = new char[alphabet_lenght];
 			characters_ascii_indexes = new int[hq::ASCII_CHARS_AMOUNT];
-			alphabet_lenght = __machine_alphabet.size();
 
 			__index_alphabet__(__machine_alphabet);
 
@@ -291,25 +293,33 @@ namespace eng
 		{
 			// this function take a letter on the input, goes through every part of the machine, and returns processed, encripted version of the input
 			int output = __char_to_number__(__letter);
-			output = plugin_board.forward(output);
-			
-			for (int i = 0; i < disks_amount; i++)
-			{
-				//std::cout << "checkpoint " << i << '.';
-				output = transcribe(output, i, disks);
-				//output = disks[i].forward(output);
-			}
 
-			output = reflector.forward(output);
-			
-			for (int i = disks_amount - 1; i >= 0; i--)
+			if (output == IRREGULAR_LETTER)
 			{
-				output = transcribe(output, i, reversed_disks);
+				return __letter;
 			}
+			else
+			{
+				output = plugin_board.forward(output);
 
-			output = plugin_board.forward(output);
-			
-			return __number_to_char__(output);
+				for (int i = 0; i < disks_amount; i++)
+				{
+					//std::cout << "checkpoint " << i << '.';
+					output = transcribe(output, i, disks);
+					//output = disks[i].forward(output);
+				}
+
+				output = reflector.forward(output);
+
+				for (int i = disks_amount - 1; i >= 0; i--)
+				{
+					output = transcribe(output, i, reversed_disks);
+				}
+
+				output = plugin_board.forward(output);
+
+				return __number_to_char__(output);
+			}
 		}
 
 		std::string encrypt_message(std::string __message)
