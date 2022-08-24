@@ -34,7 +34,7 @@ Letter indexes:  0. 1. 2. 3. 4.
 namespace eng
 {
 
-	const int STD_ALPHA_LEN = 26; // lenght of the alphabet used by the machine
+	const int STD_ALPHA_LEN = 26; // length of the alphabet used by the machine
 	const int STANDARD_DISKS_AMOUNT = 3;	 // amount of disks with letters, used in the machine
 	const int IRREGULAR_LETTER = -1;
 
@@ -127,7 +127,7 @@ namespace eng
 		Disk* reversed_disks;
 		int disks_amount; // current amount of disks
 
-		int alphabet_lenght;
+		int alphabet_length;
 
 	private: // private methods
 		char __number_to_char__(int number)
@@ -156,17 +156,17 @@ namespace eng
 		{
 			// function that generate reversed (index <-> values) version of specific disk (it's needed when signal is 'returning', after it reachs reflector)
 			Disk reversed_disk;
-			int* reversed_connections = new int[alphabet_lenght];
+			int* reversed_connections = new int[alphabet_length];
 
 			//std::cout << '\t';
-			for (int i = 0; i < alphabet_lenght; i++)
+			for (int i = 0; i < alphabet_length; i++)
 			{
 				//std::cout << __starting_disk.connections[i] << ' ';
 				reversed_connections[__starting_disk.connections[i]] = i;
 				// reversed_disk.connections[__starting_disk.connections[i]] = i;
 			}
 			
-			reversed_disk.init(reversed_connections, alphabet_lenght);
+			reversed_disk.init(reversed_connections, alphabet_length);
 			
 			return reversed_disk;
 		}
@@ -174,14 +174,14 @@ namespace eng
 		void __init_plugin_board__()
 		{
 			// function that prepares plug-in board without any connections between letters
-			int* __connections = new int[alphabet_lenght];
+			int* __connections = new int[alphabet_length];
 
-			for (int i = 0; i < alphabet_lenght; i++)
+			for (int i = 0; i < alphabet_length; i++)
 			{
 				__connections[i] = i;
 			}
 			
-			plugin_board.init(__connections, alphabet_lenght);
+			plugin_board.init(__connections, alphabet_length);
 		}
 
 	public:	// public methods
@@ -189,8 +189,8 @@ namespace eng
 		{
 			// function that is used to prepare machine before usage
 
-			alphabet_lenght = __machine_alphabet.size();
-			alphabet = new char[alphabet_lenght];
+			alphabet_length = __machine_alphabet.size();
+			alphabet = new char[alphabet_length];
 			characters_ascii_indexes = new int[hq::ASCII_CHARS_AMOUNT];
 
 			__index_alphabet__(__machine_alphabet);
@@ -205,7 +205,7 @@ namespace eng
 		{
 			// this function is used to define first / default disks
 
-			disks[disks_amount].init(__connections, alphabet_lenght);
+			disks[disks_amount].init(__connections, alphabet_length);
 
 			//disks[disks_amount].get_visual();
 
@@ -232,25 +232,25 @@ namespace eng
 		void change_disk(int disk_index, int* __connections)
 		{
 			// this function is used to change currently used disk (from the machine) to another one
-			disks[disk_index].init(__connections, alphabet_lenght);
+			disks[disk_index].init(__connections, alphabet_length);
 			reversed_disks[disk_index] = __create_reversed_disk__(disks[disk_index]);
 		}
 
 		void set_reflector(int* __connections)
 		{
 			// this function is used to mount reflector into machine
-			reflector.init(__connections, alphabet_lenght);
+			reflector.init(__connections, alphabet_length);
 		}
 
 		void load_connections(std::string __file_name, int* __connections)
 		{
 			// this function is used to load array describing disk / reflector / plugin board from text file
 			char letter;
-			//__connections = new int[alphabet_lenght];
+			//__connections = new int[alphabet_length];
 			std::fstream myfile;
 
 			myfile.open(__file_name.c_str(), std::ios::in);
-			for (int i = 0; i < alphabet_lenght; i++)
+			for (int i = 0; i < alphabet_length; i++)
 			{
 				myfile >> letter;
 				__connections[i] = __char_to_number__(letter);
@@ -266,7 +266,7 @@ namespace eng
 			
 			for (int i = 0; i < disks_amount; i++)
 			{
-				for (int j = 0; j < alphabet_lenght; j++)
+				for (int j = 0; j < alphabet_length; j++)
 				{
 					output += __number_to_char__(j);
 					output += ": ";
