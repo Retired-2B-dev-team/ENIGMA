@@ -184,6 +184,13 @@ namespace eng
 			plugin_board.init(__connections, alphabet_length);
 		}
 
+		int __transcribe__(int __letter, int __disk_number, Disk* __disks)
+		{
+			 // this function changes input letter according to connections in the disk
+			int output = __disks[__disk_number].forward(__letter);
+			return output;
+		}
+
 	public:	// public methods
 		Enigma(std::string __machine_alphabet, int __max_disks_amount = STANDARD_DISKS_AMOUNT)
 		{
@@ -280,14 +287,6 @@ namespace eng
 			
 			return output;
 		}
-		
-		int transcribe(int __letter, int __disk_number, Disk* __disks)
-		{
-			 // this function changes input letter according to connections in the disk
-			int output = __disks[__disk_number].forward(__letter);
-			return output;
-		}
-
 
 		char encrypt_letter(char __letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
@@ -305,7 +304,7 @@ namespace eng
 				for (int i = 0; i < disks_amount; i++)
 				{
 					//std::cout << "checkpoint " << i << '.';
-					output = transcribe(output, i, disks);
+					output = __transcribe__(output, i, disks);
 					//output = disks[i].forward(output);
 				}
 
@@ -313,7 +312,7 @@ namespace eng
 
 				for (int i = disks_amount - 1; i >= 0; i--)
 				{
-					output = transcribe(output, i, reversed_disks);
+					output = __transcribe__(output, i, reversed_disks);
 				}
 
 				output = plugin_board.forward(output);

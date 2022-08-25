@@ -1,0 +1,8 @@
+#enigma-settings-file
+#plug-in-board-not-implemented-yet!
+
+#plug-in-board: #&null
+#rotor: I
+#rotor: II
+#rotor: III
+#reflector: B

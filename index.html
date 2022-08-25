@@ -14,6 +14,9 @@
 			text-align: justify;
 			/* padding-left: 15%; */
 		}
+		a{
+			color: greenyellow;
+		}
 		.console{
 			white-space: pre;
 		}
@@ -21,17 +24,23 @@
 			white-space: pre;
 			color: blueviolet;
 		}
-		a{
-			color: greenyellow;
+		.console-out{
+			color: cadetblue;
 		}
 	</style>
 </head>
 
 <body>
-	<p class="console-info"><b>&#60i></b> This site is not virtual machine in any case!
+	<div><!--Info Text-->
+		<p class="console-info"><b>&#60i></b> This site is not virtual machine in any case!
 <b>The "command session" below is only a decorative element!</b></p>
+	
+	</div>
+
 	<hr>
-	<p class="console">********************************************
+
+	<div><!--Main Page-->
+		<p class="console">********************************************
 Starting ENIGMA-VIRTUAL-MACHINE...    [ ok ]
 Starting Shell...                     [ ok ]
 Auto login...                         [ ok ]
@@ -39,19 +48,20 @@ Auto login...                         [ ok ]
 
 admin@ENIGMA:~# echo $WELCOME
 
-<b>Hello, World</b> from <i>RETIRED 2B ENIGMA DEV-TEAM</i>!
+<span class="console-out"><b>Hello, World</b> from <i>RETIRED 2B ENIGMA DEV-TEAM</i>!</span>
 
 admin@ENIGMA:~# echo $STATUS_INFO
 
-Page is under construction, so check back later.
+<span class="console-out">Page is under construction, so check back later.</span>
 
 admin@ENIGMA:~# ls
 
-  <a href="https://github.com/JENOT-ANT/ENIGMA">GitHub repository</a>
-  <a href="https://github.com/JENOT-ANT/ENIGMA/wiki">Wiki</a>
-  <a href="https://github.com/JENOT-ANT/ENIGMA/tree/main/ENIGMA-v0.0.0">Latest version</a>
+    <a href="https://github.com/JENOT-ANT/ENIGMA">GitHub-repository</a>    <a href="https://github.com/JENOT-ANT/ENIGMA/wiki">Project's-wiki</a>    <a href="https://github.com/JENOT-ANT/ENIGMA/tree/main/ENIGMA-v0.0.0">Latest-version</a>
 
 admin@ENIGMA:~#</p>
+	
+	</div>
+
 </body>
 
 </html>

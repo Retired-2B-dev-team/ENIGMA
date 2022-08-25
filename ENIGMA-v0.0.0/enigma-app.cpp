@@ -6,6 +6,7 @@ using namespace eng; // Enigma stuff namespace
 // constants:
 const std::string DISKS_PATH = "disks/";
 const std::string REFLECTORS_PATH = "reflectors/";
+const std::string SETTINGS_PATH = "settings.txt";
 const std::string HELP_FILE_NAME = "help.info";
 const std::string VERSION_FILE_NAME = "version.info";
 const std::string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -15,6 +16,36 @@ const std::string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 
 // functions:
+
+void load_settings(Enigma* enigma, std::string settings_path)
+{
+	std::fstream settings_file;
+	int connections[STD_ALPHA_LEN];
+	std::string file_name;
+	
+	settings_file.open(settings_path, std::ios::in);
+
+	for (int i = 0; i < STANDARD_DISKS_AMOUNT; i++)
+	{
+		do {
+			settings_file >> file_name;
+		} while (file_name[0] == '#');
+		
+		file_name = DISKS_PATH + file_name + ".rtr";
+		enigma->load_connections(file_name, connections);
+		enigma->add_disk(connections);
+	}
+
+	do {
+		settings_file >> file_name;
+	} while (file_name[0] == '#');
+
+	file_name = REFLECTORS_PATH + file_name + ".rtr";
+	enigma->load_connections(file_name, connections);
+	enigma->set_reflector(connections);
+	
+	settings_file.close();
+}
 
 void cmd(int argc, char** argv, Enigma* enigma)
 {
@@ -63,36 +94,9 @@ int main(int argc, char** argv)
 {
 	// machine declaration:
 	Enigma enigma(ALPHABET);
-	// disks' connections:
-	int BETA[STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "beta.rtr",	BETA);
-	int GAMMA[STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "gamma.rtr",	GAMMA);
-	int I[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "I.rtr",		I);
-	int II[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "II.rtr",		II);
-	int III[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "III.rtr",		III);
-	int IV[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "IV.rtr",		IV);
-	int V[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "V.rtr",		V);
-	int VI[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "VI.rtr",		VI);
-	int VII[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "VII.rtr",		VII);
-	int VIII[STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "VIII.rtr",	VIII);
-	// reflectors' connections:
-	int B[STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "B.rtr", B);
-	int C[STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "C.rtr", C);
-
-	// TEST / EXAMPLE set:
-	enigma.add_disk(I);
-	enigma.add_disk(II);
-	enigma.add_disk(III);
-
-	enigma.set_reflector(B);
+	
+	load_settings(&enigma, SETTINGS_PATH);
 	cmd(argc, argv, &enigma);
-
-	// enigma.plug_in('A', 'B');
-
-	// std::cout << enigma.get_visual();
-
-	// std::cout << enigma.encrypt_letter('A');
-	// std::cout << enigma.encrypt_letter('F');
-	// std::cout << enigma.encrypt_letter('B');
 	
 	return 0;
 }
