@@ -10,6 +10,30 @@ namespace hq
 	// useful / "magic" numbers:
 	const int ASCII_CHARS_AMOUNT = 256;
 
+	
+	bool is_lower(char letter)
+	{
+		if ((int)letter >= 97 && (int)letter <= 122)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	char capital(char letter)
+	{
+		if (is_lower(letter) == true)
+		{
+			return (char)(letter - 32);
+		}
+		else
+		{
+			return letter;
+		}
+	}
 
 	void clear_int_array(int* array, int beginning, int end, int empty_number = 0)
 	{

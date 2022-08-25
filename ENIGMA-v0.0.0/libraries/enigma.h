@@ -329,7 +329,7 @@ namespace eng
 			
 			for (int i = 0; i < __message.size(); i++)
 			{
-				output += encrypt_letter(__message[i]);
+				output += encrypt_letter(hq::capital(__message[i]));
 			}
 
 			return output;

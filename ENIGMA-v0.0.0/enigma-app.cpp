@@ -16,7 +16,7 @@ const std::string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 // functions:
 
-void cmd(int argc, char** argv)
+void cmd(int argc, char** argv, Enigma* enigma)
 {
 	std::vector<std::string> arguments = hq::cmd::separate_args(argc, argv);
 	std::string argument;
@@ -33,17 +33,28 @@ void cmd(int argc, char** argv)
 		{
 			std::cout << hq::read_file(VERSION_FILE_NAME);
 		}
-		else if (argument == "-f" || argument == "--file")
+		else if (i < arguments.size() - 1) // if it's not last provided input/parameter
 		{
-			
-		}
-		else if (argument == "-t" || argument == "--text")
-		{
-			
+			if (argument == "-f" || argument == "--file")
+			{
+				i++; // we now gonna read value of the parameter
+				std::string input_text = hq::read_file(arguments[i]);
+				std::cout << enigma->encrypt_message(input_text);
+			}
+			else if (argument == "-t" || argument == "--text")
+			{
+				i++; // we now gonna read value of the parameter
+				std::string input_text = arguments[i];
+				std::cout << enigma->encrypt_message(input_text);
+			}
 		}
 		else if (argument == "-s" || argument == "--setings")
 		{
 			
+		}
+		else
+		{
+			std::cout << "#Incorrect command use!";
 		}
 	}
 }
@@ -53,25 +64,19 @@ int main(int argc, char** argv)
 	// machine declaration:
 	Enigma enigma(ALPHABET);
 	// disks' connections:
-	int BETA[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "beta.rtr",	BETA);
-	int GAMMA[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "gamma.rtr",	GAMMA);
-	int I[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "I.rtr",		I);
-	int II[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "II.rtr",		II);
-	int III[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "III.rtr",		III);
-	int IV[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "IV.rtr",		IV);
-	int V[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "V.rtr",		V);
-	int VI[eng::STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "VI.rtr",		VI);
-	int VII[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "VII.rtr",		VII);
-	int VIII[eng::STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "VIII.rtr",	VIII);
+	int BETA[STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "beta.rtr",	BETA);
+	int GAMMA[STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "gamma.rtr",	GAMMA);
+	int I[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "I.rtr",		I);
+	int II[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "II.rtr",		II);
+	int III[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "III.rtr",		III);
+	int IV[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "IV.rtr",		IV);
+	int V[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "V.rtr",		V);
+	int VI[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "VI.rtr",		VI);
+	int VII[STD_ALPHA_LEN];		enigma.load_connections(DISKS_PATH + "VII.rtr",		VII);
+	int VIII[STD_ALPHA_LEN];	enigma.load_connections(DISKS_PATH + "VIII.rtr",	VIII);
 	// reflectors' connections:
-	int B[eng::STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "B.rtr", B);
-	int C[eng::STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "C.rtr", C);
-
-	// for (int i = 0; i < 26; i++)
-	// {
-	// 	std::cout << I[i] << ' ';
-	// }
-
+	int B[STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "B.rtr", B);
+	int C[STD_ALPHA_LEN];		enigma.load_connections(REFLECTORS_PATH + "C.rtr", C);
 
 	// TEST / EXAMPLE set:
 	enigma.add_disk(I);
@@ -79,14 +84,15 @@ int main(int argc, char** argv)
 	enigma.add_disk(III);
 
 	enigma.set_reflector(B);
+	cmd(argc, argv, &enigma);
 
-	enigma.plug_in('A', 'B');
+	// enigma.plug_in('A', 'B');
 
-	std::cout << enigma.get_visual();
+	// std::cout << enigma.get_visual();
 
-	std::cout << enigma.encrypt_letter('A');
-	std::cout << enigma.encrypt_letter('F');
-	std::cout << enigma.encrypt_letter('B');
+	// std::cout << enigma.encrypt_letter('A');
+	// std::cout << enigma.encrypt_letter('F');
+	// std::cout << enigma.encrypt_letter('B');
 	
 	return 0;
 }
