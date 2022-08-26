@@ -84,12 +84,12 @@ namespace eng
 		void init(int* __connections, int __disk_size, int __notch = -100, int __notch_second = -100)
 		{
 			// function that is used to prepare disk before usage
-        		notch = __notch
-        		notch_second = __notch_second
-			rotation = 0;
+        		Disk::notch = __notch
+        		Disk::notch_second = __notch_second
+			Disk::rotation = 0;
 
-			size = __disk_size;
-			connections = new int[size];
+			Disk::size = __disk_size;
+			Disk::connections = new int[size];
 
 			std::copy(__connections, __connections + size, connections);
 		}
