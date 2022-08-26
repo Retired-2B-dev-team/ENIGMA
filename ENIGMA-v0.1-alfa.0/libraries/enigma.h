@@ -84,8 +84,8 @@ namespace eng
 		void init(int* connections, int disk_size, int notch = -100, int notch_second = -100)
 		{
 			// function that is used to prepare disk before usage
-        	Disk::notch = notch
-        	Disk::notch_second = notch_second
+			Disk::notch = notch;
+			Disk::notch_second = notch_second;
 			Disk::rotation = 0;
 
 			Disk::size = disk_size;
@@ -264,7 +264,7 @@ namespace eng
 			std::fstream myfile;
 
 			myfile.open(file_name.c_str(), std::ios::in);
-			for (int i = 0; i < alphabet_length; i++)
+			for (int i = 0; i < Enigma::alphabet_length; i++)
 			{
 				myfile >> letter;
 				connections[i] = __char_to_number__(letter);
@@ -316,7 +316,7 @@ namespace eng
 			{
 				Enigma::disks[disk_index - 1].rotate(1);
 				Enigma::disks[disk_index].rotate(1);
-				Enigma::revesed_disks[disk_index].rotate(1);
+				Enigma::reversed_disks[disk_index].rotate(1);
 			}
 		}
 
@@ -324,7 +324,7 @@ namespace eng
 		{
 			if (Enigma::disks[0].notch == Enigma::disks[0].rotation || Enigma::disks[0].notch_second == Enigma::disks[0].rotation)
 			{
-				for(int i = 1; i < Enigma::disk_amount; i++)
+				for(int i = 1; i < Enigma::disks_amount; i++)
 				{
 					check_rotation(i);
 				}
@@ -376,7 +376,7 @@ namespace eng
 			
 			for (int i = 0; i < message.size(); i++)
 			{
-				rotation_mechanism()
+				rotation_mechanism();
 				output += encrypt_letter(hq::capital(message[i]));
 			}
 
