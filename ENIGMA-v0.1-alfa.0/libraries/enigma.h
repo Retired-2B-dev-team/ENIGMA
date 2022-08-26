@@ -46,6 +46,8 @@ namespace eng
 		int* connections; // an array describing the disk construction
 		int rotation;
 		int size; // amount of letters on the single disk
+		int notch;
+		int notch_second;
 
 	private: // private methods
 		void __correct_rotation__()
@@ -79,15 +81,17 @@ namespace eng
 		// 	// this function should load the disk's letter connections from file and initialize disk
 		// }
 
-		void init(int* connections, int disk_size)
+		void init(int* __connections, int __disk_size, int __notch = -100, int __notch_second = -100)
 		{
 			// function that is used to prepare disk before usage
-			Disk::rotation = 0;
+        		notch = __notch
+        		notch_second = __notch_second
+			rotation = 0;
 
-			Disk::size = disk_size;
-			Disk::connections = new int[size];
+			size = __disk_size;
+			connections = new int[size];
 
-			std::copy(connections, connections + size, Disk::connections);
+			std::copy(__connections, __connections + size, connections);
 		}
 
 		void rotate(int rotation_tiks)
@@ -208,17 +212,17 @@ namespace eng
 			__init_plugin_board__();
 		}
 
-		void add_disk(int* connections)
+		void add_disk(int* __connections, int __notch, int __notch_second)
 		{
 			// this function is used to define first / default disks
 
-			Enigma::disks[Enigma::disks_amount].init(connections, Enigma::alphabet_length);
+			disks[disks_amount].init(__connections, alphabet_length, __notch, __notch_second);
 
 			//disks[disks_amount].get_visual();
 
-			Enigma::reversed_disks[Enigma::disks_amount] = __create_reversed_disk__(Enigma::disks[Enigma::disks_amount]);
+			reversed_disks[disks_amount] = __create_reversed_disk__(disks[disks_amount]);
 
-			Enigma::disks_amount++;
+			disks_amount++;
 		}
 
 		void plug_in(char x, char y)
@@ -236,35 +240,52 @@ namespace eng
 			Enigma::plugin_board.connections[y] = y;
 		}
 
-		void change_disk(int disk_index, int* connections)
+		void change_disk(int disk_index, int* __connections, int __notch, int __notch_second )
 		{
-			// this function is used to change currently used disk (from the machine) to another one
-			Enigma::disks[disk_index].init(connections, Enigma::alphabet_length);
-			Enigma::reversed_disks[disk_index] = __create_reversed_disk__(Enigma::disks[disk_index]);
+				// this function is used to change currently used disk (from the machine) to another one
+				disks[disk_index].init(__connections, alphabet_length, __notch, __notch_second);
+				reversed_disks[disk_index] = __create_reversed_disk__(disks[disk_index]);
 		}
-
+		
 		void set_reflector(int* connections)
 		{
 			// this function is used to mount reflector into machine
 			Enigma::reflector.init(connections, Enigma::alphabet_length);
 		}
-
-		void load_connections(std::string file_name, int* connections)
+		
+		void load_connections(std::string __file_name, int* __connections)
 		{
 			// this function is used to load array describing disk / reflector / plugin board from text file
 			char letter;
+		    	int notch;
+		    	int notch_second;
+
 			//__connections = new int[alphabet_length];
 			std::fstream myfile;
 
-			myfile.open(file_name.c_str(), std::ios::in);
-			for (int i = 0; i < Enigma::alphabet_length; i++)
+			myfile.open(__file_name.c_str(), std::ios::in);
+			for (int i = 0; i < alphabet_length; i++)
 			{
 				myfile >> letter;
-				connections[i] = __char_to_number__(letter);
+				__connections[i] = __char_to_number__(letter);
 				//std::cout << letter << ' ' << __connections[i] << ' ';
 			}
+
+		    	myfile >> letter;
+		    	notch = __char_to_number__(letter);
+
+			if(!myfile.eof())
+			{
+				notch_second = -100;
+			}
+			else
+			{
+				myfile >> letter;
+				notch_second = __char_to_number__(letter);
+			}
+
 			myfile.close();
-			// add_disk(__connections);
+			// add_disk(__connections, notch , notch_second);
 		}
 		
 		std::string get_visual()
@@ -287,6 +308,32 @@ namespace eng
 			
 			return output;
 		}
+		void check_rotation(int __disk_index)
+		{
+			// this function checks if the notch is triggered and if it is , rotates the disks
+			if (disks[__disk_index - 1].notch == disks[__disk_index - 1].rotation || disks[__disk_index - 1].notch_second == disks[__disk_index - 1].rotation)
+			{
+				disks[__disk_index - 1].rotate(1);
+				disks[__disk_index].rotate(1);
+				revesed_disks[__disk_index].rotate(1);
+			}
+		}
+
+		void rotation_mechanism()
+		{
+			if (disks[0].notch == disks[0].rotation || disks[0].notch_second == disks[0].rotation)
+			{
+				for(int i = 1; i < disk_amount; i++)
+				{
+				check_rotation(i);
+				}
+			}
+			else
+			{
+				disks[0].rotate(1);
+			}
+		}
+		
 
 		char encrypt_letter(char letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
@@ -328,6 +375,7 @@ namespace eng
 			
 			for (int i = 0; i < message.size(); i++)
 			{
+				rotation_mechanism()
 				output += encrypt_letter(hq::capital(message[i]));
 			}
 
