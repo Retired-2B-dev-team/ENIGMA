@@ -41,16 +41,16 @@ W celu zapewnienia czytelności kodu oraz utrzymania porządku w repozytorium, w
 3. Słowa w nazwach oddzielamy pojedynczym znakiem `_` np. `int moja_zmienna`.
 4. `Stałe` nazywamy **WIELKIMI LITERAMI**.
 5. `Klasy`/`struktury` nazywamy poczynając od **Wielkiej Litery**, przy czym utworzone `obiekty`/`zmienne` danje klasy/struktury nazywamy **małymi literami**.
-6. Nazwy zmiennych, które są `argumentami` metod klas/struktur zaczynamy od podwójnego znaku podłogi `__`, w celu odróżnienia od atrybutów danej klasy/struktury np.
+6. Przed nazwami zmiennych, które są `atrybutami` danej klasy piszemy `nazwa_klasy::` w celu odróżnienia od zmiennych lokalnych, np:
   ```c++
   struct Foo
   {
   private:
     int bar = 0;
   public:
-    init(int __bar)
+    init(int bar)
     {
-      bar = __bar;
+      Foo::bar = bar;
     }
   };
   ```
@@ -69,18 +69,18 @@ private:
   int y = 0;
   
 public:
-  Pair(__x, __y)
+  Pair(x, y)
   {
-    x = __x;
-    y = __y;
+    Pair::x = x;
+    Pair::y = y;
   }
   int get_x()
   {
-    return x;
+    return Pair::x;
   }
   int get_y()
   {
-    return y;
+    return Pair::y;
   }
 };
 

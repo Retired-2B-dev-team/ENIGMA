@@ -50,24 +50,24 @@ namespace eng
 	private: // private methods
 		void __correct_rotation__()
 		{
-			while (rotation >= size)
+			while (Disk::rotation >= Disk::size)
 			{
-				rotation -= size;
+				Disk::rotation -= Disk::size;
 			}
-			while (rotation < 0)
+			while (Disk::rotation < 0)
 			{
-				rotation += size;
+				Disk::rotation += Disk::size;
 			}
 		}
 
-		int __normalize__(int __index)
+		int __normalize__(int index)
 		{
 			// this function grab index and add rotation tiks to it, so signal can be passed to the right spot on the ring
-			int output = rotation + __index;
+			int output = Disk::rotation + index;
 
-			if (output >= size) // if index of out input is out of range of disk
+			if (output >= Disk::size) // if index of out input is out of range of disk
 			{
-				output -= size;
+				output -= Disk::size;
 			}
 
 			return output;
@@ -79,28 +79,28 @@ namespace eng
 		// 	// this function should load the disk's letter connections from file and initialize disk
 		// }
 
-		void init(int* __connections, int __disk_size)
+		void init(int* connections, int disk_size)
 		{
 			// function that is used to prepare disk before usage
-			rotation = 0;
+			Disk::rotation = 0;
 
-			size = __disk_size;
-			connections = new int[size];
+			Disk::size = disk_size;
+			Disk::connections = new int[size];
 
-			std::copy(__connections, __connections + size, connections);
+			std::copy(connections, connections + size, Disk::connections);
 		}
 
-		void rotate(int __rotation_tiks)
+		void rotate(int rotation_tiks)
 		{
 			// function used to rotate disk
-			rotation += __rotation_tiks;
+			Disk::rotation += rotation_tiks;
 			__correct_rotation__();
 		}
 
 		int forward(int index)
 		{
 			// pass signal through disk
-			return connections[__normalize__(index)];
+			return Disk::connections[__normalize__(index)];
 		}
 
 		void get_visual()
@@ -132,41 +132,41 @@ namespace eng
 	private: // private methods
 		char __number_to_char__(int number)
 		{
-			return alphabet[number];
+			return Enigma::alphabet[number];
 		}
 
 		int __char_to_number__(char character)
 		{
-			return characters_ascii_indexes[(int)character];
+			return Enigma::characters_ascii_indexes[(int)character];
 		}
 
-		void __index_alphabet__(std::string __machine_alphabet)
+		void __index_alphabet__(std::string machine_alphabet)
 		{
 			// this function fills character_ascii_indexes with numbers that represent proper sign in ascii table (usually it will be just small fragment of this table, just indexes of letters that are used by machine)
-			hq::clear_int_array(characters_ascii_indexes, 0, hq::ASCII_CHARS_AMOUNT, IRREGULAR_LETTER);
+			hq::clear_int_array(Enigma::characters_ascii_indexes, 0, hq::ASCII_CHARS_AMOUNT, IRREGULAR_LETTER);
 
-			for (int i = 0; i < __machine_alphabet.size(); i++)
+			for (int i = 0; i < machine_alphabet.size(); i++)
 			{
-				alphabet[i] = __machine_alphabet[i];
-				characters_ascii_indexes[(int)alphabet[i]] = i;
+				Enigma::alphabet[i] = machine_alphabet[i];
+				Enigma::characters_ascii_indexes[(int)Enigma::alphabet[i]] = i;
 			}
 		}
 
-		Disk __create_reversed_disk__(Disk __starting_disk)
+		Disk __create_reversed_disk__(Disk starting_disk)
 		{
 			// function that generate reversed (index <-> values) version of specific disk (it's needed when signal is 'returning', after it reachs reflector)
 			Disk reversed_disk;
-			int* reversed_connections = new int[alphabet_length];
+			int* reversed_connections = new int[Enigma::alphabet_length];
 
 			//std::cout << '\t';
-			for (int i = 0; i < alphabet_length; i++)
+			for (int i = 0; i < Enigma::alphabet_length; i++)
 			{
-				//std::cout << __starting_disk.connections[i] << ' ';
-				reversed_connections[__starting_disk.connections[i]] = i;
-				// reversed_disk.connections[__starting_disk.connections[i]] = i;
+				//std::cout << starting_disk.connections[i] << ' ';
+				reversed_connections[starting_disk.connections[i]] = i;
+				// reversed_disk.connections[starting_disk.connections[i]] = i;
 			}
 			
-			reversed_disk.init(reversed_connections, alphabet_length);
+			reversed_disk.init(reversed_connections, Enigma::alphabet_length);
 			
 			return reversed_disk;
 		}
@@ -174,93 +174,93 @@ namespace eng
 		void __init_plugin_board__()
 		{
 			// function that prepares plug-in board without any connections between letters
-			int* __connections = new int[alphabet_length];
+			int* connections = new int[Enigma::alphabet_length];
 
-			for (int i = 0; i < alphabet_length; i++)
+			for (int i = 0; i < Enigma::alphabet_length; i++)
 			{
-				__connections[i] = i;
+				connections[i] = i;
 			}
 			
-			plugin_board.init(__connections, alphabet_length);
+			Enigma::plugin_board.init(connections, Enigma::alphabet_length);
 		}
 
-		int __transcribe__(int __letter, int __disk_number, Disk* __disks)
+		int __transcribe__(int letter, int disk_number, Disk* disks)
 		{
 			 // this function changes input letter according to connections in the disk
-			int output = __disks[__disk_number].forward(__letter);
+			int output = disks[disk_number].forward(letter);
 			return output;
 		}
 
 	public:	// public methods
-		Enigma(std::string __machine_alphabet, int __max_disks_amount = STANDARD_DISKS_AMOUNT)
+		Enigma(std::string machine_alphabet, int max_disks_amount = STANDARD_DISKS_AMOUNT)
 		{
 			// function that is used to prepare machine before usage
 
-			alphabet_length = __machine_alphabet.size();
-			alphabet = new char[alphabet_length];
-			characters_ascii_indexes = new int[hq::ASCII_CHARS_AMOUNT];
+			Enigma::alphabet_length = machine_alphabet.size();
+			Enigma::alphabet = new char[Enigma::alphabet_length];
+			Enigma::characters_ascii_indexes = new int[hq::ASCII_CHARS_AMOUNT];
 
-			__index_alphabet__(__machine_alphabet);
+			__index_alphabet__(machine_alphabet);
 
-			disks_amount = 0;
-			disks = new Disk[__max_disks_amount];
-			reversed_disks = new Disk[__max_disks_amount];
+			Enigma::disks_amount = 0;
+			Enigma::disks = new Disk[max_disks_amount];
+			Enigma::reversed_disks = new Disk[max_disks_amount];
 			__init_plugin_board__();
 		}
 
-		void add_disk(int* __connections)
+		void add_disk(int* connections)
 		{
 			// this function is used to define first / default disks
 
-			disks[disks_amount].init(__connections, alphabet_length);
+			Enigma::disks[Enigma::disks_amount].init(connections, Enigma::alphabet_length);
 
 			//disks[disks_amount].get_visual();
 
-			reversed_disks[disks_amount] = __create_reversed_disk__(disks[disks_amount]);
+			Enigma::reversed_disks[Enigma::disks_amount] = __create_reversed_disk__(Enigma::disks[Enigma::disks_amount]);
 
-			disks_amount++;
+			Enigma::disks_amount++;
 		}
 
 		void plug_in(char x, char y)
 		{
 			// this is function that allows to make a connection on plug-in board between two letters
-			plugin_board.connections[__char_to_number__(x)] = __char_to_number__(y);
-			plugin_board.connections[__char_to_number__(y)] = __char_to_number__(x);
+			Enigma::plugin_board.connections[__char_to_number__(x)] = __char_to_number__(y);
+			Enigma::plugin_board.connections[__char_to_number__(y)] = __char_to_number__(x);
 		}
 
 		void plug_out(char x)
 		{
 			// this is function that allows to disconnect two letters on plug-in board
-			int y = plugin_board.connections[__char_to_number__(x)];
-			plugin_board.connections[__char_to_number__(x)] = __char_to_number__(x);
-			plugin_board.connections[y] = y;
+			int y = Enigma::plugin_board.connections[__char_to_number__(x)];
+			Enigma::plugin_board.connections[__char_to_number__(x)] = __char_to_number__(x);
+			Enigma::plugin_board.connections[y] = y;
 		}
 
-		void change_disk(int disk_index, int* __connections)
+		void change_disk(int disk_index, int* connections)
 		{
 			// this function is used to change currently used disk (from the machine) to another one
-			disks[disk_index].init(__connections, alphabet_length);
-			reversed_disks[disk_index] = __create_reversed_disk__(disks[disk_index]);
+			Enigma::disks[disk_index].init(connections, Enigma::alphabet_length);
+			Enigma::reversed_disks[disk_index] = __create_reversed_disk__(Enigma::disks[disk_index]);
 		}
 
-		void set_reflector(int* __connections)
+		void set_reflector(int* connections)
 		{
 			// this function is used to mount reflector into machine
-			reflector.init(__connections, alphabet_length);
+			Enigma::reflector.init(connections, Enigma::alphabet_length);
 		}
 
-		void load_connections(std::string __file_name, int* __connections)
+		void load_connections(std::string file_name, int* connections)
 		{
 			// this function is used to load array describing disk / reflector / plugin board from text file
 			char letter;
 			//__connections = new int[alphabet_length];
 			std::fstream myfile;
 
-			myfile.open(__file_name.c_str(), std::ios::in);
-			for (int i = 0; i < alphabet_length; i++)
+			myfile.open(file_name.c_str(), std::ios::in);
+			for (int i = 0; i < Enigma::alphabet_length; i++)
 			{
 				myfile >> letter;
-				__connections[i] = __char_to_number__(letter);
+				connections[i] = __char_to_number__(letter);
 				//std::cout << letter << ' ' << __connections[i] << ' ';
 			}
 			myfile.close();
@@ -271,15 +271,15 @@ namespace eng
 		{
 			std::string output = "";
 			
-			for (int i = 0; i < disks_amount; i++)
+			for (int i = 0; i < Enigma::disks_amount; i++)
 			{
-				for (int j = 0; j < alphabet_length; j++)
+				for (int j = 0; j < Enigma::alphabet_length; j++)
 				{
 					output += __number_to_char__(j);
 					output += ": ";
-					output += __number_to_char__(disks[i].forward(j));
+					output += __number_to_char__(Enigma::disks[i].forward(j));
 					output += ", ";
-					output += __number_to_char__(reversed_disks[i].forward(j));
+					output += __number_to_char__(Enigma::reversed_disks[i].forward(j));
 					output += "; ";
 				}
 				output += "\n\n";
@@ -288,47 +288,47 @@ namespace eng
 			return output;
 		}
 
-		char encrypt_letter(char __letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
+		char encrypt_letter(char letter) // this is the encryption mechanism, it goes throught all disks(foward and back) and outputs an encrypted letter
 		{
 			// this function take a letter on the input, goes through every part of the machine, and returns processed, encripted version of the input
-			int output = __char_to_number__(__letter);
+			int output = __char_to_number__(letter);
 
 			if (output == IRREGULAR_LETTER)
 			{
-				return __letter;
+				return letter;
 			}
 			else
 			{
-				output = plugin_board.forward(output);
+				output = Enigma::plugin_board.forward(output);
 
-				for (int i = 0; i < disks_amount; i++)
+				for (int i = 0; i < Enigma::disks_amount; i++)
 				{
 					//std::cout << "checkpoint " << i << '.';
-					output = __transcribe__(output, i, disks);
+					output = __transcribe__(output, i, Enigma::disks);
 					//output = disks[i].forward(output);
 				}
 
-				output = reflector.forward(output);
+				output = Enigma::reflector.forward(output);
 
-				for (int i = disks_amount - 1; i >= 0; i--)
+				for (int i = Enigma::disks_amount - 1; i >= 0; i--)
 				{
-					output = __transcribe__(output, i, reversed_disks);
+					output = __transcribe__(output, i, Enigma::reversed_disks);
 				}
 
-				output = plugin_board.forward(output);
+				output = Enigma::plugin_board.forward(output);
 
 				return __number_to_char__(output);
 			}
 		}
 
-		std::string encrypt_message(std::string __message)
+		std::string encrypt_message(std::string message)
 		{
 			// this function goes through every letter in message and encrypt/decrypt it using encrypt_letter function
 			std::string output = "";
 			
-			for (int i = 0; i < __message.size(); i++)
+			for (int i = 0; i < message.size(); i++)
 			{
-				output += encrypt_letter(hq::capital(__message[i]));
+				output += encrypt_letter(hq::capital(message[i]));
 			}
 
 			return output;
