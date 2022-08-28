@@ -26,7 +26,14 @@ To work properly, you should:
   **REMEMBER!** THIS IS **PRE-RELEASE** VERSION! It's **not** tested well, **nor** it has good error handling. Use it **wisely** and take **responsibility** of what you are doing!
   If you are not sure, **just wait** for more stable release.
 
-
+## Attributions:
+  - [Browser Enigma emulator](https://piotte13.github.io/enigma-cipher/)
+    > Huge thanks for providing greate source that helped understand how the mechanism of the Enigma is working inside.
+  ***
+  - [Rotors specifications](https://en.wikipedia.org/wiki/Enigma_rotor_details)
+  - [Polish article about Enigma](https://pl.wikipedia.org/wiki/Enigma)
+  - [English article about Enigma](https://en.wikipedia.org/wiki/Enigma_machine)
+    > We also appreciate Wikipedia articles about Enigma, that provided detailed, technical info about machine construction.
 ## Example:
 - ALPHABET:
 
