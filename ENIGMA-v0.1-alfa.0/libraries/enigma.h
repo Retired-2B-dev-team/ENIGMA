@@ -37,7 +37,8 @@ namespace eng
 	const int STD_ALPHA_LEN = 26; // length of the alphabet used by the machine
 	const int STANDARD_DISKS_AMOUNT = 3;	 // amount of disks with letters, used in the machine
 	const int IRREGULAR_LETTER = -1;
-
+	const int EMPTY_NOTCH = -2;
+	
 	class Disk
 	{
 
@@ -62,26 +63,13 @@ namespace eng
 			}
 		}
 
-		int __normalize__(int index)
-		{
-			// this function grab index and add rotation tiks to it, so signal can be passed to the right spot on the ring
-			int output = Disk::rotation + index;
-
-			if (output >= Disk::size) // if index of out input is out of range of disk
-			{
-				output -= Disk::size;
-			}
-
-			return output;
-		}
-
 	public: // public methods
 		// void load(std::string file_name)
 		// {
 		// 	// this function should load the disk's letter connections from file and initialize disk
 		// }
 
-		void init(int* connections, int disk_size, int notch = -100, int notch_second = -100)
+		void init(int* connections, int disk_size, int notch = EMPTY_NOTCH, int notch_second = EMPTY_NOTCH)
 		{
 			// function that is used to prepare disk before usage
 			Disk::notch = notch;
@@ -104,7 +92,8 @@ namespace eng
 		int forward(int index)
 		{
 			// pass signal through disk
-			return Disk::connections[__normalize__(index)];
+			index = hq::normalize(index + Disk::rotation, Disk::size);
+			return hq::normalize(Disk::connections[index] + Disk::size - Disk::rotation, Disk::size);
 		}
 
 		void get_visual()
@@ -253,14 +242,13 @@ namespace eng
 			Enigma::reflector.init(connections, Enigma::alphabet_length);
 		}
 		
-		void load_connections(std::string file_name, int* connections)
+		hq::Pair load_connections(std::string file_name, int* connections, bool load_notches = false)
 		{
 			// this function is used to load array describing disk / reflector / plugin board from text file
 			char letter;
-		    int notch;
-		    int notch_second;
+		    int notch = EMPTY_NOTCH;
+		    int notch_second = EMPTY_NOTCH;
 
-			//connections = new int[alphabet_length];
 			std::fstream myfile;
 
 			myfile.open(file_name.c_str(), std::ios::in);
@@ -270,21 +258,22 @@ namespace eng
 				connections[i] = __char_to_number__(letter);
 				//std::cout << letter << ' ' << connections[i] << ' ';
 			}
-
-		    myfile >> letter;
-		    notch = __char_to_number__(letter);
-
-			if(!myfile.eof())
-			{
-				notch_second = -100;
-			}
-			else
+			
+			if (load_notches == true)
 			{
 				myfile >> letter;
-				notch_second = __char_to_number__(letter);
+				notch = __char_to_number__(letter);
+
+				if(!myfile.eof())
+				{
+					myfile >> letter;
+					notch_second = __char_to_number__(letter);
+				}
 			}
 
 			myfile.close();
+
+			return hq::Pair(notch, notch_second);
 			// add_disk(connections, notch , notch_second);
 		}
 		
@@ -308,15 +297,25 @@ namespace eng
 			
 			return output;
 		}
-		
+
+		void rotate_disk(int index)
+		{
+			Enigma::disks[index].rotate(1);
+			Enigma::reversed_disks[index].rotate(1);
+		}
+
 		void check_rotation(int disk_index)
 		{
 			// this function checks if the notch is triggered and if it is , rotates the disks
 			if (Enigma::disks[disk_index - 1].notch == Enigma::disks[disk_index - 1].rotation || Enigma::disks[disk_index - 1].notch_second == Enigma::disks[disk_index - 1].rotation)
 			{
-				Enigma::disks[disk_index - 1].rotate(1);
-				Enigma::disks[disk_index].rotate(1);
-				Enigma::reversed_disks[disk_index].rotate(1);
+				// Enigma::disks[disk_index - 1].rotate(1);
+				// Enigma::reversed_disks[disk_index - 1].rotate(1);
+				rotate_disk(disk_index - 1);
+				
+				// Enigma::disks[disk_index].rotate(1);
+				// Enigma::reversed_disks[disk_index].rotate(1);
+				rotate_disk(disk_index);
 			}
 		}
 
@@ -331,7 +330,9 @@ namespace eng
 			}
 			else
 			{
-				Enigma::disks[0].rotate(1);
+				// Enigma::disks[0].rotate(1);
+				// Enigma::reversed_disks[0].rotate(1);
+				rotate_disk(0);
 			}
 		}
 		
@@ -377,6 +378,8 @@ namespace eng
 			for (int i = 0; i < message.size(); i++)
 			{
 				rotation_mechanism();
+				//Enigma::disks[0].rotate(1);
+				//Enigma::reversed_disks[0].rotate(1);
 				output += encrypt_letter(hq::capital(message[i]));
 			}
 

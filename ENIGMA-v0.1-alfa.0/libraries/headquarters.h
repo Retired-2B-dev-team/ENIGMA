@@ -10,6 +10,23 @@ namespace hq
 	// useful / "magic" numbers:
 	const int ASCII_CHARS_AMOUNT = 256;
 
+	struct Pair
+	{
+	public:
+		int x;
+		int y;
+		
+		Pair (int x, int y)
+		{
+			Pair::x = x;
+			Pair::y = y;
+		}
+	};
+
+	int normalize(int value, int max)
+	{
+		return value % max;
+	}
 	
 	bool is_lower(char letter)
 	{
