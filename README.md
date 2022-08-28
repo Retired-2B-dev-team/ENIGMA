@@ -28,7 +28,7 @@ To work properly, you should:
 
 ## Attributions:
   - [Browser Enigma emulator](https://piotte13.github.io/enigma-cipher/)
-    > Huge thanks for providing great source that helped understand how the mechanism of the Enigma works inside, and made possible to test and find bugs inside code.
+    > Huge thanks for providing great source that helped understand how the mechanism of the Enigma works inside, and made possible to test and find bugs inside our code.
   ***
   - [Rotors specifications](https://en.wikipedia.org/wiki/Enigma_rotor_details)
   - [Polish article about Enigma](https://pl.wikipedia.org/wiki/Enigma)
