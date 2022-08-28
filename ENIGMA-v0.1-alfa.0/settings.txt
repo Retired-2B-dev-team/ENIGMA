@@ -1,7 +1,6 @@
 #enigma-settings-file
-#plug-in-board-not-implemented-yet!
 
-#plug-in-board: #&null
+#plug-in-board: plugins
 #rotor: I
 #rotor: II
 #rotor: III

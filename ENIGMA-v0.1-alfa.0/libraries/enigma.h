@@ -38,7 +38,8 @@ namespace eng
 	const int STANDARD_DISKS_AMOUNT = 3;	 // amount of disks with letters, used in the machine
 	const int IRREGULAR_LETTER = -1;
 	const int EMPTY_NOTCH = -2;
-	
+	const char COMMENT_CHAR = '#';
+
 	class Disk
 	{
 
@@ -241,7 +242,27 @@ namespace eng
 			// this function is used to mount reflector into machine
 			Enigma::reflector.init(connections, Enigma::alphabet_length);
 		}
-		
+
+		void load_plugins(std::string file_name)
+		{
+			std::fstream input_file;
+			std::string plugin;
+			
+			input_file.open(file_name, std::ios::in);
+			
+			while (input_file.eof() == false)
+			{
+				input_file >> plugin;
+				
+				if (plugin[0] != COMMENT_CHAR and plugin.size() == 2)
+				{
+					plug_in(plugin[0], plugin[1]);
+				}
+			}
+
+			input_file.close();
+		}
+
 		hq::Pair load_connections(std::string file_name, int* connections, bool load_notches = false)
 		{
 			// this function is used to load array describing disk / reflector / plugin board from text file

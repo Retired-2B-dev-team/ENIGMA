@@ -28,11 +28,18 @@ void load_settings(Enigma* enigma, std::string settings_path)
 
 	settings_file.open(settings_path, std::ios::in);
 
+	do {
+			settings_file >> file_name;
+	} while (file_name[0] == COMMENT_CHAR);
+
+	enigma->load_plugins(file_name + ".plgin");
+
+	
 	for (int i = 0; i < STANDARD_DISKS_AMOUNT; i++)
 	{
 		do {
 			settings_file >> file_name;
-		} while (file_name[0] == '#');
+		} while (file_name[0] == COMMENT_CHAR);
 		
 		file_name = DISKS_PATH + file_name + ".rtr";
 		notches = enigma->load_connections(file_name, connections);
