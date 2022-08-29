@@ -42,7 +42,7 @@ void load_settings(Enigma* enigma, std::string settings_path)
 		} while (file_name[0] == COMMENT_CHAR);
 		
 		file_name = DISKS_PATH + file_name + ".rtr";
-		notches = enigma->load_connections(file_name, connections);
+		notches = enigma->load_connections(file_name, connections, true);
 		enigma->add_disk(connections, notches.x, notches.y);
 	}
 
@@ -107,6 +107,6 @@ int main(int argc, char** argv)
 	
 	load_settings(&enigma, SETTINGS_PATH);
 	cmd(argc, argv, &enigma);
-	
+
 	return 0;
 }

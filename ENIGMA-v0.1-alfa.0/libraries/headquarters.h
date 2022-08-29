@@ -25,6 +25,11 @@ namespace hq
 
 	int normalize(int value, int max)
 	{
+		while (value < 0)
+		{
+			value += max;
+		}
+		
 		return value % max;
 	}
 	

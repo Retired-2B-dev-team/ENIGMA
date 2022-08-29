@@ -52,17 +52,17 @@ namespace eng
 		int notch_second;
 
 	private: // private methods
-		void __correct_rotation__()
-		{
-			while (Disk::rotation >= Disk::size)
-			{
-				Disk::rotation -= Disk::size;
-			}
-			while (Disk::rotation < 0)
-			{
-				Disk::rotation += Disk::size;
-			}
-		}
+		// void __correct_rotation__()
+		// {
+		// 	while (Disk::rotation >= Disk::size)
+		// 	{
+		// 		Disk::rotation -= Disk::size;
+		// 	}
+		// 	while (Disk::rotation < 0)
+		// 	{
+		// 		Disk::rotation += Disk::size;
+		// 	}
+		// }
 
 	public: // public methods
 		// void load(std::string file_name)
@@ -87,14 +87,14 @@ namespace eng
 		{
 			// function used to rotate disk
 			Disk::rotation += rotation_tiks;
-			__correct_rotation__();
+			rotation = hq::normalize(Disk::rotation, Disk::size);
 		}
 
 		int forward(int index)
 		{
 			// pass signal through disk
 			index = hq::normalize(index + Disk::rotation, Disk::size);
-			return hq::normalize(Disk::connections[index] + Disk::size - Disk::rotation, Disk::size);
+			return hq::normalize(Disk::connections[index] - Disk::rotation, Disk::size);
 		}
 
 		void get_visual()
