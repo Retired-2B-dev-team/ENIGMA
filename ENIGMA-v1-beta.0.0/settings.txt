@@ -1,7 +1,7 @@
 #enigma-settings-file
 
 #plug-in-board: plugins
-#rotor: I
-#rotor: II
-#rotor: III
+#rotor: I 0
+#rotor: II 0
+#rotor: III 0
 #reflector: B

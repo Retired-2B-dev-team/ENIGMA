@@ -70,12 +70,12 @@ namespace eng
 		// 	// this function should load the disk's letter connections from file and initialize disk
 		// }
 
-		void init(int* connections, int disk_size, int notch = EMPTY_NOTCH, int notch_second = EMPTY_NOTCH)
+		void init(int* connections, int disk_size, int notch = EMPTY_NOTCH, int notch_second = EMPTY_NOTCH, int rotation = 0)
 		{
 			// function that is used to prepare disk before usage
 			Disk::notch = notch;
 			Disk::notch_second = notch_second;
-			Disk::rotation = 0;
+			Disk::rotation = rotation;
 
 			Disk::size = disk_size;
 			Disk::connections = new int[size];
@@ -160,7 +160,7 @@ namespace eng
 				// reversed_disk.connections[starting_disk.connections[i]] = i;
 			}
 			
-			reversed_disk.init(reversed_connections, Enigma::alphabet_length);
+			reversed_disk.init(reversed_connections, Enigma::alphabet_length, EMPTY_NOTCH, EMPTY_NOTCH, starting_disk.rotation);
 			
 			return reversed_disk;
 		}
@@ -202,11 +202,11 @@ namespace eng
 			__init_plugin_board__();
 		}
 
-		void add_disk(int* connections, int notch, int notch_second)
+		void add_disk(int* connections, int notch, int notch_second, int rotation = 0)
 		{
 			// this function is used to define first / default disks
 
-			Enigma::disks[disks_amount].init(connections, Enigma::alphabet_length, notch, notch_second);
+			Enigma::disks[disks_amount].init(connections, Enigma::alphabet_length, notch, notch_second, rotation);
 
 			//disks[disks_amount].get_visual();
 
@@ -298,31 +298,17 @@ namespace eng
 			// add_disk(connections, notch , notch_second);
 		}
 		
-		std::string get_visual()
+		void get_visual(char input)
 		{
-			std::string output = "";
-			
-			for (int i = 0; i < Enigma::disks_amount; i++)
-			{
-				for (int j = 0; j < Enigma::alphabet_length; j++)
-				{
-					output += __number_to_char__(j);
-					output += ": ";
-					output += __number_to_char__(Enigma::disks[i].forward(j));
-					output += ", ";
-					output += __number_to_char__(Enigma::reversed_disks[i].forward(j));
-					output += "; ";
-				}
-				output += "\n\n";
-			}
-			
-			return output;
+			// char screen[alphabet_length][12 * STANDARD_DISKS_AMOUNT + 25];
+			// screen[alphabet_length / 2][0] = '('; screen[alphabet_length / 2][1] = input; screen[alphabet_length / 2][2] = ')'; screen[alphabet_length / 2][3] = '='; screen[alphabet_length / 2][4] = '>';
+			// for (int i)
 		}
 
-		void rotate_disk(int index)
+		void rotate_disk(int index, int rotation_tiks = 1)
 		{
-			Enigma::disks[index].rotate(1);
-			Enigma::reversed_disks[index].rotate(1);
+			Enigma::disks[index].rotate(rotation_tiks);
+			Enigma::reversed_disks[index].rotate(rotation_tiks);
 		}
 
 		void check_rotation(int disk_index)

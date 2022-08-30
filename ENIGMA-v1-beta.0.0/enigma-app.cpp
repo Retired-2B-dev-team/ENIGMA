@@ -22,6 +22,7 @@ void load_settings(Enigma* enigma, std::string settings_path)
 	std::fstream settings_file;
 	int connections[STD_ALPHA_LEN];
 	std::string file_name;
+	int rotation;
 	hq::Pair notches(EMPTY_NOTCH, EMPTY_NOTCH);
 	//int notch;
 	//int notch_second;
@@ -41,9 +42,15 @@ void load_settings(Enigma* enigma, std::string settings_path)
 			settings_file >> file_name;
 		} while (file_name[0] == COMMENT_CHAR);
 		
+		do {
+			settings_file >> rotation;
+		} while (file_name[0] == COMMENT_CHAR);
+		
 		file_name = DISKS_PATH + file_name + ".rtr";
 		notches = enigma->load_connections(file_name, connections, true);
-		enigma->add_disk(connections, notches.x, notches.y);
+
+		enigma->add_disk(connections, notches.x, notches.y, rotation);
+
 	}
 
 	do {

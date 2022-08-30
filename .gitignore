@@ -34,3 +34,6 @@
 # Environment
 .vscode/
 .vs/
+
+# Python
+__pycache__/
