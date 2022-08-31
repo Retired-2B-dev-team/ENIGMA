@@ -249,7 +249,9 @@ namespace eng
 			std::string plugin;
 			
 			input_file.open(file_name, std::ios::in);
-			
+
+			if (!input_file.is_open()) hq::error("Failed to open plugins' file: " + file_name);
+
 			while (input_file.eof() == false)
 			{
 				input_file >> plugin;
@@ -273,8 +275,13 @@ namespace eng
 			std::fstream myfile;
 
 			myfile.open(file_name.c_str(), std::ios::in);
+
+			if (!myfile.is_open()) hq::error("Failed to open disk connections' file: " + file_name);
+
 			for (int i = 0; i < Enigma::alphabet_length; i++)
 			{
+				if (myfile.eof()) hq::error("Failed to load disk's connections from file: " + file_name);
+				
 				myfile >> letter;
 				connections[i] = __char_to_number__(letter);
 				//std::cout << letter << ' ' << connections[i] << ' ';
@@ -282,6 +289,8 @@ namespace eng
 			
 			if (load_notches == true)
 			{
+				if (myfile.eof()) hq::error("Failed to load notches from file: " + file_name);
+				
 				myfile >> letter;
 				notch = __char_to_number__(letter);
 

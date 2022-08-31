@@ -27,10 +27,15 @@ void load_settings(Enigma* enigma, std::string settings_path)
 	//int notch;
 	//int notch_second;
 
+	
 	settings_file.open(settings_path, std::ios::in);
 
+	if (!settings_file.is_open()) hq::error("Failed to open settings file.");
+
 	do {
-			settings_file >> file_name;
+		if (settings_file.eof()) hq::error("Failed to load plug-in board.");
+
+		settings_file >> file_name;
 	} while (file_name[0] == COMMENT_CHAR);
 
 	enigma->load_plugins(file_name + ".plgin");
@@ -39,10 +44,14 @@ void load_settings(Enigma* enigma, std::string settings_path)
 	for (int i = 0; i < STANDARD_DISKS_AMOUNT; i++)
 	{
 		do {
+			if (settings_file.eof()) hq::error("Failed to load rotor.");
+			
 			settings_file >> file_name;
 		} while (file_name[0] == COMMENT_CHAR);
 		
 		do {
+			if (settings_file.eof()) hq::error("Failed to load rotor's rotation.");
+			
 			settings_file >> rotation;
 		} while (file_name[0] == COMMENT_CHAR);
 		
@@ -54,6 +63,8 @@ void load_settings(Enigma* enigma, std::string settings_path)
 	}
 
 	do {
+		if (settings_file.eof()) hq::error("Failed to load reflector.");
+
 		settings_file >> file_name;
 	} while (file_name[0] == '#');
 
@@ -102,7 +113,7 @@ void cmd(int argc, char** argv, Enigma* enigma)
 		}
 		else
 		{
-			std::cout << "#Incorrect command use!";
+			hq::error("Incorrect command parameters.");
 		}
 	}
 }

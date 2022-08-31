@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+#define QUITE(label) goto label;
+
+
 namespace hq
 {
 
@@ -22,6 +25,12 @@ namespace hq
 			Pair::y = y;
 		}
 	};
+
+	void error(std::string error_message)
+	{
+		std::cerr << error_message << '\n';
+		throw;
+	}
 
 	int normalize(int value, int max)
 	{
@@ -90,6 +99,9 @@ namespace hq
 		std::string text = "";
 		
 		file.open(file_name, std::ios::in);
+
+		if (!file.is_open()) error("Failed to open " + file_name + " file.");
+
 		while (std::getline(file, line))
 		{
 			text += line + '\n';
