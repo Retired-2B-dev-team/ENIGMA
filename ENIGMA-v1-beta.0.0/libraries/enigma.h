@@ -43,32 +43,14 @@ namespace eng
 	class Disk
 	{
 
-	// private: // private attributes
-	public:
+	public: // public attributes
 		int* connections; // an array describing the disk construction
 		int rotation;
 		int size; // amount of letters on the single disk
 		int notch;
 		int notch_second;
 
-	private: // private methods
-		// void __correct_rotation__()
-		// {
-		// 	while (Disk::rotation >= Disk::size)
-		// 	{
-		// 		Disk::rotation -= Disk::size;
-		// 	}
-		// 	while (Disk::rotation < 0)
-		// 	{
-		// 		Disk::rotation += Disk::size;
-		// 	}
-		// }
-
-	public: // public methods
-		// void load(std::string file_name)
-		// {
-		// 	// this function should load the disk's letter connections from file and initialize disk
-		// }
+	// public methods
 
 		void init(int* connections, int disk_size, int notch = EMPTY_NOTCH, int notch_second = EMPTY_NOTCH, int rotation = 0)
 		{
@@ -152,12 +134,9 @@ namespace eng
 			Disk reversed_disk;
 			int* reversed_connections = new int[Enigma::alphabet_length];
 
-			//std::cout << '\t';
 			for (int i = 0; i < Enigma::alphabet_length; i++)
 			{
-				//std::cout << starting_disk.connections[i] << ' ';
 				reversed_connections[starting_disk.connections[i]] = i;
-				// reversed_disk.connections[starting_disk.connections[i]] = i;
 			}
 			
 			reversed_disk.init(reversed_connections, Enigma::alphabet_length, EMPTY_NOTCH, EMPTY_NOTCH, starting_disk.rotation);
@@ -207,9 +186,7 @@ namespace eng
 			// this function is used to define first / default disks
 
 			Enigma::disks[disks_amount].init(connections, Enigma::alphabet_length, notch, notch_second, rotation);
-
-			//disks[disks_amount].get_visual();
-
+			
 			Enigma::reversed_disks[Enigma::disks_amount] = __create_reversed_disk__(Enigma::disks[Enigma::disks_amount]);
 
 			Enigma::disks_amount++;
@@ -284,7 +261,6 @@ namespace eng
 				
 				myfile >> letter;
 				connections[i] = __char_to_number__(letter);
-				//std::cout << letter << ' ' << connections[i] << ' ';
 			}
 			
 			if (load_notches == true)
@@ -304,7 +280,6 @@ namespace eng
 			myfile.close();
 
 			return hq::Pair(notch, notch_second);
-			// add_disk(connections, notch , notch_second);
 		}
 		
 		void get_visual(char input)
@@ -325,12 +300,7 @@ namespace eng
 			// this function checks if the notch is triggered and if it is , rotates the disks
 			if (Enigma::disks[disk_index - 1].notch == Enigma::disks[disk_index - 1].rotation || Enigma::disks[disk_index - 1].notch_second == Enigma::disks[disk_index - 1].rotation)
 			{
-				// Enigma::disks[disk_index - 1].rotate(1);
-				// Enigma::reversed_disks[disk_index - 1].rotate(1);
 				rotate_disk(disk_index - 1);
-				
-				// Enigma::disks[disk_index].rotate(1);
-				// Enigma::reversed_disks[disk_index].rotate(1);
 				rotate_disk(disk_index);
 			}
 		}
@@ -346,8 +316,6 @@ namespace eng
 			}
 			else
 			{
-				// Enigma::disks[0].rotate(1);
-				// Enigma::reversed_disks[0].rotate(1);
 				rotate_disk(0);
 			}
 		}
@@ -368,9 +336,7 @@ namespace eng
 
 				for (int i = 0; i < Enigma::disks_amount; i++)
 				{
-					//std::cout << "checkpoint " << i << '.';
 					output = __transcribe__(output, i, Enigma::disks);
-					//output = disks[i].forward(output);
 				}
 
 				output = Enigma::reflector.forward(output);
@@ -394,8 +360,6 @@ namespace eng
 			for (int i = 0; i < message.size(); i++)
 			{
 				rotation_mechanism();
-				//Enigma::disks[0].rotate(1);
-				//Enigma::reversed_disks[0].rotate(1);
 				output += encrypt_letter(hq::capital(message[i]));
 			}
 
