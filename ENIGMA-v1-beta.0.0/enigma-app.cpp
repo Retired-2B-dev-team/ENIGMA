@@ -24,10 +24,8 @@ void load_settings(Enigma* enigma, std::string settings_path)
 	std::string file_name;
 	int rotation;
 	hq::Pair notches(EMPTY_NOTCH, EMPTY_NOTCH);
-	//int notch;
-	//int notch_second;
-
 	
+
 	settings_file.open(settings_path, std::ios::in);
 
 	if (!settings_file.is_open()) hq::error("Failed to open settings file.");
