@@ -1,14 +1,17 @@
 from os import system
 from os import chdir
+from os.path import dirname
 
 from tkinter import *
 from tkinter.font import BOLD
 from tkinter.ttk import Separator
 
+
 APP_TITLE: str = "Enigma GUI"
 EXE_NAME: str = "enigma.exe"
 INPUT_PATH: str = "GUI/input.txt"
 OUTPUT_PATH: str = "GUI/output.txt"
+
 
 def encrypt(text: str, output: Label):
     text = text.removesuffix('\n')
@@ -26,7 +29,9 @@ def encrypt(text: str, output: Label):
     output.config(text=text)
 
 def main():
+    chdir(dirname(__file__))
     chdir("../")
+
     window = Tk()
     window.title(APP_TITLE)
     
