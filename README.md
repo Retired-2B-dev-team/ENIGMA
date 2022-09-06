@@ -3,7 +3,7 @@
 
 | `status`         | `maintained` | `maintainers` | `version`      | `next-release-deadline` | `website`                                     |
 | :--------------: | :----------: | :-----------: | :------------: | :---------------------: | :-------------------------------------------: |
-| work-in-progress | yes          | 6             |  v0.1-alfa.0   | 01-September-2022       | https://retired-2b-dev-team.github.io/ENIGMA/ |
+| work-in-progress | yes          | 6             |  v1-beta.0.0   | 01-September-2022       | https://retired-2b-dev-team.github.io/ENIGMA/ |
 
 [![GitHub license](https://img.shields.io/github/license/JENOT-ANT/ENIGMA?style=for-the-badge)](https://github.com/JENOT-ANT/ENIGMA/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/JENOT-ANT/ENIGMA?style=for-the-badge)](https://github.com/JENOT-ANT/ENIGMA/issues)
