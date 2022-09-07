@@ -36,8 +36,8 @@ To work properly, you should:
     > We also appreciate Wikipedia articles about Enigma, that provided detailed, technical info about machine construction.
 
 ## Requirements:
-  - C++ compiler (If You prefer to buld program from source on your own, what's recomended)
-  - Python v3.9.0 or higher (to run GUI app).
+  - `C++ compiler` (If You prefer to buld program from source on your own, what's recomended)
+  - `Python v3.9.0 or higher` (to run GUI app).
 
 ## Example:
 - ALPHABET:
