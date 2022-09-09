@@ -3,7 +3,7 @@
 
 | `status`         | `maintained` | `maintainers` | `version`      | `next-release-deadline` | `website`                                     |
 | :--------------: | :----------: | :-----------: | :------------: | :---------------------: | :-------------------------------------------: |
-| work-in-progress | yes          | 6             |  v1-beta.1.0   | 01-September-2022       | https://retired-2b-dev-team.github.io/ENIGMA/ |
+| work-in-progress | yes          | 6             |  v1-beta.1.0   | <hr>                    | https://retired-2b-dev-team.github.io/ENIGMA/ |
 
 [![GitHub license](https://img.shields.io/github/license/JENOT-ANT/ENIGMA?style=for-the-badge)](https://github.com/JENOT-ANT/ENIGMA/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/JENOT-ANT/ENIGMA?style=for-the-badge)](https://github.com/JENOT-ANT/ENIGMA/issues)
@@ -11,7 +11,7 @@
 # ENIGMA
 
 ## Description:
-This project is going to become **a simulation of the ENIGMA encryption machine** maybe.
+This is **a simulation of the ENIGMA encryption machine**.
 
 ## [Official website](https://retired-2b-dev-team.github.io/ENIGMA/)
 ## Download:
@@ -19,7 +19,7 @@ You can easly download files from `Releases` tab (you need only one sorce code p
 To work properly, you should:
   1. Extract archive.
   2. Put executable file in folder `*your-extarction-path*/ENIGMA-*version*/ENIGMA-*version*` (near files like help.info, setings.txt and enigma-app.cpp).
-  3. Alternatively you can just build executable file by yourself just compiling enigma-app.cpp and putting executable into the same directory.
+  3. Alternatively you can just build executable file by yourself just compiling enigma-app.cpp and putting executable into the same directory as the source.
 
   > Current version supports only CMD usage, so to run program you should fire up the terminal in folder with executable file and run program as command with correct parameters (you can run `enigma -h` for help or just read help.info).
   
