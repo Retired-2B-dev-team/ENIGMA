@@ -20,8 +20,10 @@ To work properly, you should:
   1. Extract archive.
   2. Put executable file in folder `*your-extarction-path*/ENIGMA-*version*/ENIGMA-*version*` (near files like help.info, setings.txt and enigma-app.cpp).
   3. Alternatively you can just build executable file by yourself just compiling enigma-app.cpp and putting executable into the same directory as the source.
-
-  > Current version supports only CMD usage, so to run program you should fire up the terminal in folder with executable file and run program as command with correct parameters (you can run `enigma -h` for help or just read help.info).
+  
+  > GUI app can be fund in 'GUI' directory, to use it, run .py file
+  > Current version supports CMD usage, so to run program you should fire up the terminal in folder with executable file and run program as command with correct parameters (you can run `enigma -h` for help or just read help.info)
+  
   
   **REMEMBER!** THIS IS **PRE-RELEASE** VERSION! It's **not** tested well, **nor** it has good error handling. Use it **wisely** and take **responsibility** of what you are doing!
   If you are not sure, **just wait** for more stable release.
