@@ -21,7 +21,7 @@ To work properly, you should:
   2. Put executable file in folder `*your-extarction-path*/ENIGMA-*version*/ENIGMA-*version*` (near files like help.info, setings.txt and enigma-app.cpp).
   3. Alternatively you can just build executable file by yourself just compiling enigma-app.cpp and putting executable into the same directory as the source.
   
-  > GUI app can be fund in 'GUI' directory, to use it, run .py file
+  > GUI app can be fund in 'GUI' directory, to use it, run .py file (you need have compiled c++ core code first to use the python GUI wrapper)
   > Current version supports CMD usage, so to run program you should fire up the terminal in folder with executable file and run program as command with correct parameters (you can run `enigma -h` for help or just read help.info)
   
   
